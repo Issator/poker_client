@@ -1,1 +1,28 @@
+.play-card {
+    @extend .card;
+    @extend .border-3;
+    aspect-ratio: 64 / 89;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 3rem;
+    font-weight: bold;
+}
+
+.card-st {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
+.card-sign {
+    font-size: 140%;
+}
+
+.card-be {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+
 @import '~bootstrap/scss/bootstrap.scss';
