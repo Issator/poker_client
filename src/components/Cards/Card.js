@@ -12,18 +12,12 @@ export default function Card({value, sign, className = "", hidden=false}){
     if(hidden){
         return (
             <div className={`play-card text-primary shadow me-2 ${className} bg-primary`}>
-                <div className="card-sign card-st ">
-                    0
-                </div>
-                <h1 className="card-sign display-6 fw-bold">0</h1>
-                <div className="card-sign card-be">
-                    0
-                </div>
             </div>
         )
     }
+    
     return (
-        <div className={`play-card text-${cardColor} shadow me-2 ${className}`}>
+        <div className={`play-card text-${cardColor} shadow me-2 ${className} size-on-hover`}>
             <div className="card-sign card-st">
                 {value} {icon}
             </div>
