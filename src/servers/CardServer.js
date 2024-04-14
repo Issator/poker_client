@@ -5,7 +5,7 @@ export default function CardServer(){
     const changeCard = () => {
         return {
             value: values[Math.floor(Math.random() * values.length)],
-            sing: signs[Math.floor(Math.random() * signs.length)],
+            sign: signs[Math.floor(Math.random() * signs.length)],
         }
     }
 
