@@ -16,6 +16,12 @@ export default function Hand({player = false}){
         cardServer.getCard()
     ])
 
+    const [bet, setBet] = useState(0)
+
+    const onSliderChange = (e) => {
+        setBet(e.target.value)
+    }
+
     const fold = () => {
         tokenServer.fold()
         changeCards()
@@ -67,19 +73,28 @@ export default function Hand({player = false}){
         }
 
         return(
-            <div className="d-flex justify-content-center align-items-center mb-5">
-                <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
-                <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
-                <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={wait}>Sprawdzanie</button>
-                <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
-                <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
+            <div className="d-flex justify-content-center align-items-center mb-3">
+                <div className="flex-row">
+                    <div>
+                        <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
+                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
+                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={wait}>Sprawdzanie</button>
+                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
+                        <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
+                    </div>
+                    <div className=" mt-2">
+                        <label for="betValue" className="form-label mt-2 display-6">Zakład: {bet}</label>
+                        <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} onChange={onSliderChange}></input>
+                    </div>
+                </div>
+                
             </div>
         )
     }
 
     return(
         <>
-            <div className="d-flex justify-content-center align-items-center mb-5 rotate-0">
+            <div className="d-flex justify-content-center align-items-center mb-5 rotate-0 display-6">
                 Postawiona kwota: 1000
             </div>
 
