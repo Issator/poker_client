@@ -73,7 +73,7 @@ export default function Hand({player = false}){
         }
 
         return(
-            <div className="d-flex justify-content-center align-items-center mb-3">
+            <div className="d-flex justify-content-center align-items-center mb-1">
                 <div className="flex-row">
                     <div>
                         <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
@@ -82,8 +82,8 @@ export default function Hand({player = false}){
                         <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
                         <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
                     </div>
-                    <div className=" mt-2">
-                        <label for="betValue" className="form-label mt-2 display-6">Zakład: {bet}</label>
+                    <div className="mt-1">
+                        <label for="betValue" className="form-label mt-2">Zakład: {bet}</label>
                         <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} onChange={onSliderChange}></input>
                     </div>
                 </div>
@@ -94,7 +94,7 @@ export default function Hand({player = false}){
 
     return(
         <>
-            <div className="d-flex justify-content-center align-items-center mb-5 rotate-0 display-6">
+            <div className="d-flex justify-content-center align-items-center mb-2 rotate-0 display-6">
                 Postawiona kwota: 1000
             </div>
 
