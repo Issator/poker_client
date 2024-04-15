@@ -79,12 +79,17 @@ export default function Hand({player = false}){
 
     return(
         <>
-         {showOptions()}   
-        <div className="hand">
-            {cards.map((card, index) => {
+            <div className="d-flex justify-content-center align-items-center mb-5 rotate-0">
+                Postawiona kwota: 1000
+            </div>
+
+            {showOptions()}   
+
+            <div className="hand">
+                {cards.map((card, index) => {
                     return <Card value={card.value} sign={card.sign} key={card.sign + card.value} id={index} hidden={!player} onClick={onCardClick} selected={card.isSelected}/>
-            })}
-        </div>
+                })}
+            </div>
         </>
     )
 }

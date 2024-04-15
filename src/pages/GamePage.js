@@ -13,7 +13,7 @@ export default function GamePage(){
                 </div>
 
                 <div className="left-hand h-100 d-flex align-items-center">
-                    <div className="d-flex rotation-90">
+                    <div className="rotation-90">
                         <Hand/>
                     </div>
                 </div>
