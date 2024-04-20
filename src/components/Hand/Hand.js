@@ -1,12 +1,10 @@
 import { useState } from "react"
 import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
-import TokenServer from "../../servers/TokenServer"
 
 export default function Hand({player = false}){
 
     const cardServer = CardServer()
-    const tokenServer = TokenServer()
 
     const [cards, setCards] = useState([
         cardServer.getCard(),
@@ -23,27 +21,27 @@ export default function Hand({player = false}){
     }
 
     const fold = () => {
-        tokenServer.fold()
+        cardServer.fold()
         changeCards()
     }
 
-    const wait = () => {
-        tokenServer.wait()
+    const call = () => {
+        cardServer.call()
         changeCards()
     }
 
     const check = () => {
-        tokenServer.check()
+        cardServer.check()
         changeCards()
     }
 
     const raise = () => {
-        tokenServer.raise()
+        cardServer.raise()
         changeCards()
     }
 
     const allIn = () => {
-        tokenServer.allIn()
+        cardServer.allIn()
         changeCards()
     }
 
@@ -78,13 +76,13 @@ export default function Hand({player = false}){
                     <div>
                         <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
                         <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
-                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={wait}>Sprawdzanie</button>
+                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={call}>Sprawdzanie</button>
                         <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
                         <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
                     </div>
                     <div className="mt-1">
-                        <label for="betValue" className="form-label mt-2">Zakład: {bet}</label>
-                        <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} onChange={onSliderChange}></input>
+                        <label htmlFor="betValue" className="form-label mt-2">Zakład: {bet}</label>
+                        <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} defaultValue={0} onChange={onSliderChange}></input>
                     </div>
                 </div>
                 
