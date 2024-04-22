@@ -1,11 +1,11 @@
 import { HiArrowRight } from "react-icons/hi2";
 
-export default function RoomItem(){
+export default function RoomItem({data}){
     return (
         <div className="card my-2 p-0">
             <div className="card-body d-flex flex-row p-0">
                 <div className="p-2 ms-3">
-                    <h5 class="card-title">Nazwa pokoju</h5>
+                    <h5 className="card-title">{data}</h5>
                     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
                 <div className="ms-auto d-flex">

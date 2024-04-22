@@ -1,7 +1,7 @@
 import socket from "./Socket"
 
 export default function RoomServer(){
-    const joinRoom = (userName, roomName, password) => {
+    const createRoom = (userName, roomName, password) => {
         return new Promise((resolve, reject) => {
             socket.emit('stworz_pokoj', {wlasciciel: userName, nazwa: roomName, haslo: password})
             socket.on('komunikat', (response) => {
@@ -14,10 +14,32 @@ export default function RoomServer(){
         })
     }
 
-    const createRoom = (userName, roomName, password) => {
+    const getRooms = () => {
+        return new Promise((resolve, reject) => {
+            socket.emit('wyswietl_pokoje')
+            socket.on('pokoje', response => {
+                socket.off('wyswietl_pokoje')
+                socket.off('pokoje')
+                socket.off('komunikat')
+                resolve(response)
+            })
+
+            socket.on('komunikat', response => {
+                socket.off('wyswietl_pokoje')
+                socket.off('pokoje')
+                socket.off('komunikat')
+                reject(response)
+            })
+
+            setTimeout(reject, 1000)
+        })
+    }
+
+    const joinRoom = (userName, roomName, password) => {
         return new Promise((resolve, reject) => {
             socket.emit('dolacz_do_pokoju', {gracz: userName, nazwa: roomName, haslo: password})
             socket.on('komunikat', (response) => {
+                socket.off('dolacz_do_pokoju')
                 socket.off('komunikat')
                 resolve(response)
             })
@@ -56,6 +78,7 @@ export default function RoomServer(){
         createRoom,
         joinRoom,
         leaveRoom,
-        changePassword
+        changePassword,
+        getRooms
     }
 }

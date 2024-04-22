@@ -1,12 +1,12 @@
 import { useState } from "react"
 
-export default function CreateRoomForm(){
+export default function CreateRoomForm({onSubmit}){
     const [roomName, setRoomName] = useState("")
     const [password, setPassword] = useState("")
 
 
     const handleButtonSubmit = () => {
-        console.log({roomName, password})
+        onSubmit({roomName, password})
     }
 
     return (
