@@ -13,7 +13,7 @@ export default function MainPage(){
         return (
             <>
                 <h1>Zalogowany jako: {AuthServer().getUserName()}</h1>
-                <button type="button" className="btn btn-primary">Wyloguj</button>
+                <button type="button" className="btn btn-primary" onClick={AuthServer().clearUserLocally}>Wyloguj</button>
             </>
         )
     }

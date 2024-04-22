@@ -1,4 +1,5 @@
 import { HiArrowRight } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 export default function RoomItem({data}){
     return (
@@ -9,7 +10,7 @@ export default function RoomItem({data}){
                     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
                 <div className="ms-auto d-flex">
-                    <button type="button" className="btn btn-primary"><HiArrowRight style={{fontSize: "1.5rem"}}/></button>
+                    <Link to={`/room?name=${data}`} className="btn btn-primary align-content-center"><HiArrowRight style={{fontSize: "1.5rem"}}/></Link>
                 </div>
             </div>
         </div>
