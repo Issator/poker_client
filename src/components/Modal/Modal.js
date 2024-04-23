@@ -21,9 +21,9 @@ const Background = (props) => {
 const ModalOverlay = (props) => {
     return (
         <div className={classes["modal-main"]}>
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
                         <div>{props.children}</div>
                     </div>
                 </div>

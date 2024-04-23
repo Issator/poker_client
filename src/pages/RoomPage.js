@@ -4,6 +4,7 @@ import RoomList from "../components/Room/RoomList";
 import RoomServer from "../servers/RoomServer"
 import AuthServer from "../servers/AuthServer"
 import CreateRoomModal from "../components/Modal/CreateRoomModal";
+import { redirect } from "react-router-dom";
 
 export default function RoomPage(){
     const [showModal, setShowModal] = useState(false)
@@ -24,7 +25,7 @@ export default function RoomPage(){
         RoomServer().createRoom(username,data.roomName, data.password)
                     .then((response) => {
                         console.log(response)
-                        loadRooms()
+                        redirect(`/room?name=${data.roomName}&created=true`)
                         setShowModal(false)
                     })
     }

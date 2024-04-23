@@ -4,9 +4,8 @@ export default function RoomServer(){
     const createRoom = (userName, roomName, password) => {
         return new Promise((resolve, reject) => {
             socket.emit('stworz_pokoj', {wlasciciel: userName, nazwa: roomName, haslo: password})
-            socket.on('komunikat', (response) => {
+            socket.on('stworz_pokoj', (response) => {
                 socket.off('stworz_pokoj')
-                socket.off('komunikat')
                 resolve(response)
             })
 
@@ -17,18 +16,15 @@ export default function RoomServer(){
     const getRooms = () => {
         return new Promise((resolve, reject) => {
             socket.emit('wyswietl_pokoje')
-            socket.on('pokoje', response => {
+            socket.on('lista_pokoi', response => {
+                socket.off('lista_pokoi')
                 socket.off('wyswietl_pokoje')
-                socket.off('pokoje')
-                socket.off('komunikat')
-                resolve(response)
-            })
 
-            socket.on('komunikat', response => {
-                socket.off('wyswietl_pokoje')
-                socket.off('pokoje')
-                socket.off('komunikat')
-                reject(response)
+                if(!response.pokoje){
+                    resolve({pokoje: []})
+                }
+
+                resolve(response)
             })
 
             setTimeout(reject, 1000)
@@ -38,9 +34,13 @@ export default function RoomServer(){
     const joinRoom = (userName, roomName, password) => {
         return new Promise((resolve, reject) => {
             socket.emit('dolacz_do_pokoju', {gracz: userName, nazwa: roomName, haslo: password})
-            socket.on('komunikat', (response) => {
+            socket.on('dolacz_do_pokoju', (response) => {
                 socket.off('dolacz_do_pokoju')
-                socket.off('komunikat')
+
+                if(response.error){
+                    reject(response)
+                }
+                
                 resolve(response)
             })
 
@@ -51,10 +51,27 @@ export default function RoomServer(){
     const leaveRoom = (roomName, userName) => {
         return new Promise((resolve, reject) => {
             socket.emit('opusc_pokoj', {gracz: userName, nazwa: roomName})
-            socket.on('komunikat', (response) => {
-                socket.off('dolacz_do_pokoju')
+            socket.on('opuszczanie_pokoju', (response) => {
+                socket.off('opuszczanie_pokoju')
                 socket.off('opusc_pokoj')
-                socket.off('komunikat')
+                resolve(response)
+            })
+
+            setTimeout(reject, 1000)
+        })
+    }
+
+    const getPlayersInRoom = (roomName) => {
+        return new Promise((resolve, reject) => {
+            socket.emit("sprawdz_graczy_w_pokoju", {nazwa: roomName})
+            socket.on("lista_graczy_w_pokoju", response => {
+                socket.off("sprawdz_graczy_w_pokoju")
+                socket.off("lista_graczy_w_pokoju")
+
+                if(response.error){
+                    reject(response)
+                }
+
                 resolve(response)
             })
 
@@ -65,8 +82,9 @@ export default function RoomServer(){
     const changePassword = (userName, roomName, password) => {
         return new Promise((resolve, reject) => {
             socket.emit('ustaw_haslo', {gracz: userName, nazwa: roomName, haslo: password})
-            socket.on('komunikat', (response) => {
-                socket.off('komunikat')
+            socket.on('ustawienie_hasla', (response) => {
+                socket.off('ustawienie_hasla')
+                socket.off('ustaw_haslo')
                 resolve(response)
             })
 
@@ -79,6 +97,7 @@ export default function RoomServer(){
         joinRoom,
         leaveRoom,
         changePassword,
-        getRooms
+        getRooms,
+        getPlayersInRoom
     }
 }

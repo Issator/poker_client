@@ -1,31 +1,66 @@
-import { useEffect } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, redirect, useSearchParams } from "react-router-dom"
+import RoomServer from "../servers/RoomServer"
+import { MdOutlineRefresh } from "react-icons/md"
+import { IoPersonSharp } from "react-icons/io5"
+import AuthServer from "../servers/AuthServer"
 
 export default function WaitPage(){
 
     const [params, setParams] = useSearchParams()
-    const players = ["janek123","maciek","zdzichu"]
-    const name = params.get('name')
+    const [players, setPlayers] = useState([])
+    const roomName = params.get('name')
 
     useEffect(() => {
-        console.log("jestem")
+        const userName = AuthServer().getUserName()
 
-        return(() => {
-            console.log("i mnie nie ma")
-        })
+        //TODO: dont add in already in
+        // can create lobby, join from app or outside
+        if(!params.get('created')){
+            
+            RoomServer().joinRoom(userName,roomName, "")
+                        .then(response => {
+                            console.log(response)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+        }
+
+        return() => {
+            RoomServer().leaveRoom(roomName, userName).finally(() => {
+                redirect("/search")
+            })}
     }, [])
 
+    const refreshList = () => {
+        RoomServer().getPlayersInRoom(roomName).then(response => {
+            setPlayers(response.gracze)
+        })
+    }
+
     const peopleInRoom = () => {
+
+        if(players.length == 0){
+            return <p className="fw-bold">Brak graczy</p>
+        }  
+
         return players.map((player, index) => {
-            return <p className="fw-bold" key={index}>{player}</p>
+            return <p className="display-6" key={index}><IoPersonSharp/> {player}</p>
         })
     }
 
     return (
         <div className="container">
-            <h1>Lobby pokoju {name}</h1>
+            <h1>Lobby pokoju {roomName}</h1>
             <hr/>
-            <p className="display-4">lista graczy</p>
+            <p className="display-4">
+                lista graczy 
+                <button type="button" className="ms-3 btn btn-secondary rounded-pill" onClick={refreshList}>
+                    <MdOutlineRefresh className="display-6"/>
+                </button>
+            
+            </p>
             {peopleInRoom()}
             <div className="d-flex flex-row">
                 <Link to={"/search"} className="btn btn-danger mt-2">Wyjdz z pokoju</Link>
