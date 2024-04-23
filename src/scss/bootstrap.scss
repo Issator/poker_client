@@ -53,6 +53,17 @@
     @extend .end-0;
 }
 
+.room-list {
+    height: 50vh;
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.button-group{
+    @extend .d-flex;
+    @extend .flex-column
+}
+
 .rotate-0 {
     transform: rotate(0deg);
 }

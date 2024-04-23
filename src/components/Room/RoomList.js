@@ -32,7 +32,7 @@ export default function RoomList(){
     const showRoomList = () => {
 
         if(rooms.length == 0){
-            return <h4 className="display-4">Brak pokoi</h4>
+            return <h4 className="display-4 text-center mt-5">Brak pokoi</h4>
         }
 
         return rooms.map((room, index) => {
@@ -41,14 +41,22 @@ export default function RoomList(){
     }
 
     return (
-        <div className="mt-5">
+        <div className="mt-5 mh-100">
 
             <div className="d-flex flex-row-reverse mt-5">
                 <button type='button' className="btn btn-success ms-2" onClick={() => setShowModal(true)}>Dodaj</button>
                 <button type="button" className="btn btn-secondary" onClick={loadRooms}>odśwież</button>
             </div>
+
+            <hr/>
             
-            {showRoomList()}
+            <div className="border border-2 p-2 rounded-2">
+                <div className="room-list">
+                    <div className="m2">
+                        {showRoomList()}
+                    </div>
+                </div>
+            </div>
 
             {showModal && <Modal onClose={() => setShowModal(false)}>
                 <div className="card" style={{width: "32rem"}}>
