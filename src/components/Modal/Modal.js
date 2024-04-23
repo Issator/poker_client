@@ -23,13 +23,9 @@ const ModalOverlay = (props) => {
         <div className={classes["modal-main"]}>
             <div class="modal-dialog">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    {/* <button type="button" class="btn-close bg-light p-2 rounded rounded-4 mb-1" data-bs-dismiss="modal" aria-label="Close" onClick={props.onClose}></button> */}
-                </div>
-                <div class="modal-body">
-                    <div>{props.children}</div>
-                </div>
+                    <div class="modal-body">
+                        <div>{props.children}</div>
+                    </div>
                 </div>
             </div>
         </div>
