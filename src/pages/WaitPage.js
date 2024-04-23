@@ -27,7 +27,10 @@ export default function WaitPage(){
             <hr/>
             <p className="display-4">lista graczy</p>
             {peopleInRoom()}
-            <Link to={"/search"} className="btn btn-primary mt-2">Wyjdz z pokoju</Link>
+            <div className="d-flex flex-row">
+                <Link to={"/search"} className="btn btn-danger mt-2">Wyjdz z pokoju</Link>
+                <button type="button" className="btn btn-success ms-auto mt-2" disabled={players.length < 2}>Rozpocznij gre</button>
+            </div>
         </div>
     )
 }
