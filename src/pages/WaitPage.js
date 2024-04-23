@@ -14,19 +14,25 @@ export default function WaitPage(){
     useEffect(() => {
         const userName = AuthServer().getUserName()
 
-        //TODO: dont add in already in
-        // can create lobby, join from app or outside
-        if(!params.get('created')){
-            
-            RoomServer().joinRoom(userName,roomName, "")
-                        .then(response => {
-                            console.log(response)
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
-        }
+        const a = []
 
+        RoomServer().getPlayersInRoom(roomName).then(response => {
+            return response.gracze
+        }).then(players => {
+            console.log(players)
+            if(!players.includes(userName)){
+            
+                RoomServer().joinRoom(userName,roomName, "")
+                            .then(response => {
+                                console.log(response)
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
+            }
+        })
+
+        // TODO: reload dont kick out
         return() => {
             RoomServer().leaveRoom(roomName, userName).finally(() => {
                 redirect("/search")

@@ -22,11 +22,11 @@ export default function RoomPage(){
 
     const onFormSubmit = (data) => {
         const username = AuthServer().getUserName()
-        RoomServer().createRoom(username,data.roomName, data.password)
+        return RoomServer().createRoom(username,data.roomName, data.password)
                     .then((response) => {
                         console.log(response)
-                        redirect(`/room?name=${data.roomName}&created=true`)
                         setShowModal(false)
+                        return redirect(`/room?name=${data.roomName}&created=true`)
                     })
     }
 
