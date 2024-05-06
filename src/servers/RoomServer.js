@@ -57,7 +57,7 @@ export default function RoomServer(){
                 resolve(response)
             })
 
-            setTimeout(reject, 1000)
+            setTimeout(resolve, 1000)
         })
     }
 
@@ -92,12 +92,17 @@ export default function RoomServer(){
         })
     }
 
+    const startGame = (username, roomName) => {
+        socket.emit(`start_game`,{nazwa: roomName, gracz: username})
+    }
+
     return {
         createRoom,
         joinRoom,
         leaveRoom,
         changePassword,
         getRooms,
-        getPlayersInRoom
+        getPlayersInRoom,
+        startGame
     }
 }

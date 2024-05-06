@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainLogo from "../components/MainLogo";
 import RoomList from "../components/Room/RoomList";
 import RoomServer from "../servers/RoomServer"
@@ -34,6 +34,19 @@ export default function RoomPage(){
                         navigate(`/room?name=${data.roomName}`, {replace: true})
                     })
     }
+
+    useEffect(() => {
+
+        loadRooms()
+        
+        const interval = setInterval(() => {
+            loadRooms()
+        }, 1000 * 10)
+
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
 
     const onKeyAccess = () => {
         console.log({key})

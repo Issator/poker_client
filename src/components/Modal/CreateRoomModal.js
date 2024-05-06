@@ -1,7 +1,7 @@
 import Modal from "./Modal"
 import CreateRoomForm from "../Forms/CreateRoomForm"
 
-export default function CreateRoomModal({onClose, onFormSubmit}){
+export default function CreateRoomModal({onClose, onFormSubmit, editMode = false, defaultValues}){
     return (
         <Modal onClose={onClose}>
             <div className="card" style={{width: "32rem"}}>
@@ -11,7 +11,7 @@ export default function CreateRoomModal({onClose, onFormSubmit}){
                             aria-label="Close" 
                             onClick={onClose}></button>
                 </div>
-                <CreateRoomForm onSubmit={onFormSubmit}/>
+                <CreateRoomForm onSubmit={onFormSubmit} editMode={editMode} defaultValues={defaultValues}/>
             </div>
         </Modal>
     )

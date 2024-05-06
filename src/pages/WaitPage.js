@@ -6,6 +6,7 @@ import { IoPersonSharp } from "react-icons/io5"
 import AuthServer from "../servers/AuthServer"
 import { FaCrown, FaTrash } from "react-icons/fa"
 import CreateRoomModal from "../components/Modal/CreateRoomModal"
+import socket from "../servers/Socket"
 
 export default function WaitPage(){
 
@@ -18,8 +19,6 @@ export default function WaitPage(){
 
     useEffect(() => {
         const userName = AuthServer().getUserName()
-
-        const a = []
 
         RoomServer().getPlayersInRoom(roomName).then(response => {
             return response.gracze
@@ -50,20 +49,52 @@ export default function WaitPage(){
             })}
     }, [])
 
+
+
     const refreshList = () => {
         RoomServer().getPlayersInRoom(roomName).then(response => {
             setPlayers(response.gracze)
-            setOwner(response.wlasciciel)
+            setOwner(response.Wlasciciel)
         })
     }
 
     const kickOutUser = (name) => {
-        console.log(`kick ${name} user out`)
+        RoomServer().leaveRoom(roomName, name).finally(() => {
+            console.log(`kick ${name} user out`)
+            refreshList()
+        })
     }
 
     const onFormSubmit = (data) => {
         console.log(data)
         setShowModal(false)
+    }
+
+    useEffect(() => {
+
+        refreshList()
+        
+        const interval = setInterval(() => {
+            refreshList()
+        }, 1000 * 10)
+
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
+
+    useEffect(() => {
+        socket.on(`start_game:${roomName}`, (response) => {
+            console.log(`gra "${roomName}" zaczęła się!`)
+        })
+
+        return(() => {
+            socket.off(`start_game:${roomName}`)
+        })
+    },[])
+
+    const startGame = (userName, roomName) => {
+        RoomServer().startGame(userName, roomName)
     }
 
     const peopleInRoom = () => {
@@ -104,10 +135,16 @@ export default function WaitPage(){
 
             <div className="d-flex flex-row">
                 <Link to={"/search"} className="btn btn-danger mt-2">Wyjdz z pokoju</Link>
-                {AuthServer().getUserName() == owner && <button type="button" className="btn btn-success ms-auto mt-2" disabled={players.length < 2}>Rozpocznij gre</button>}
+                {AuthServer().getUserName() == owner && 
+                    <button type="button" 
+                            className="btn btn-success ms-auto mt-2" 
+                            disabled={players.length < 1}
+                            onClick={() => startGame(owner, roomName)}
+                    >Rozpocznij gre</button>
+                }
             </div>
 
-            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit}/>}
+            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit} editMode={true} defaultValues={{roomName: roomName}}/>}
         </div>
     )
 }
