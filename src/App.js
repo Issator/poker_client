@@ -4,6 +4,7 @@ import MainPage from "./pages/MainPage"
 import GamePage from "./pages/GamePage";
 import RoomPage from "./pages/RoomPage";
 import WaitPage from "./pages/WaitPage";
+import { Tooltip } from "./components/Tooltip/Tooltip";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
       </BrowserRouter>
+      <Tooltip text="siem" position="top">
+        <p>joł</p>
+      </Tooltip>
     </div>
   );
 }
