@@ -1,6 +1,7 @@
 import { useState } from "react"
 import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
+import { Tooltip } from "../Tooltip/Tooltip"
 
 export default function Hand({player = false}){
 
@@ -74,11 +75,21 @@ export default function Hand({player = false}){
             <div className="d-flex justify-content-center align-items-center mb-1">
                 <div className="flex-row">
                     <div>
-                        <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
-                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
-                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={call}>Sprawdzanie</button>
-                        <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
-                        <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
+                        <Tooltip text={"poddaj zakład"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
+                        </Tooltip>
+                        <Tooltip text={"czekaj na ruch innych graczy"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
+                        </Tooltip>
+                        <Tooltip text={"wyrównaj do postawionej kwoty"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={call}>Sprawdzanie</button>
+                        </Tooltip>
+                        <Tooltip text={"przebij postawioną stawke"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
+                        </Tooltip>
+                        <Tooltip text={"połóż wszystkie żetony na puli"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
+                        </Tooltip>
                     </div>
                     <div className="mt-1">
                         <label htmlFor="betValue" className="form-label mt-2">Zakład: {bet}</label>

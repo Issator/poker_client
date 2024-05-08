@@ -9,6 +9,7 @@ export const Tooltip = ({children, text, position}) => {
             title: text,
             placement: position,
             trigger: "hover",
+            delay: 1000,
         })
         return () => t.dispose()
     }, [text])
