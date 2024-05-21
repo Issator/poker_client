@@ -1,19 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false}){
+export default function Hand({player = false, playerName, roomId}){
 
     const cardServer = CardServer()
 
-    const [cards, setCards] = useState([
-        cardServer.getCard(),
-        cardServer.getCard(),
-        cardServer.getCard(),
-        cardServer.getCard(),
-        cardServer.getCard()
-    ])
+    const [cards, setCards] = useState([])
 
     const [bet, setBet] = useState(0)
 
@@ -46,6 +40,10 @@ export default function Hand({player = false}){
         changeCards()
     }
 
+    useEffect(() => {
+
+    },[])
+
 
     const onCardClick = (index) => {
         const newCards = [...cards]
@@ -53,8 +51,8 @@ export default function Hand({player = false}){
         setCards(newCards)
     }
 
-    const firstCards = (userName) => {
-        cardServer.getFirstCards(userName)
+    const firstCards = () => {
+        cardServer.getCards(roomId, playerName)
                   .then(response => {
                     console.log(response)
                   })

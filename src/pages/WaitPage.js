@@ -15,7 +15,7 @@ export default function WaitPage(){
     const [owner, setOwner] = useState("") // TODO: jest w roomData juz
     const room_id = params.get('id')
     const [showModal, setShowModal] = useState(false)
-    const [roomData, setRoomData] = useState()
+    const [roomData, setRoomData] = useState("asdasasdasd")
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -42,12 +42,6 @@ export default function WaitPage(){
 
             refreshList()
         })
-
-        // TODO: reload dont kick out
-        return() => {
-            RoomServer().leaveRoom(room_id, userName).finally(() => {
-                redirect("/search")
-            })}
     }, [])
 
 
@@ -94,17 +88,20 @@ export default function WaitPage(){
     }, [])
 
     useEffect(() => {
-        socket.on(`start_game`, (response) => {
-            console.log("gra zaczęła się!")
+        socket.on(`start_game`, () => {
+            navigate(`/game?id=${room_id}&players=${players.length}`, { replace: true })
         })
-
-        return(() => {
-            socket.off(`start_game`)
-        })
-    },[])
+    },[socket, players])
 
     const startGame = () => {
         RoomServer().startGame(roomData.gracze, room_id)
+    }
+
+    const leaveRoom = () => {
+        const username = AuthServer().getUserName()
+        RoomServer().leaveRoom(room_id, username)
+        socket.off(`start_game`)
+        navigate("/search", { replace: true })
     }
 
     const peopleInRoom = () => {
@@ -144,11 +141,11 @@ export default function WaitPage(){
             <hr/>
 
             <div className="d-flex flex-row">
-                <Link to={"/search"} className="btn btn-danger mt-2">Wyjdz z pokoju</Link>
+                <button onClick={leaveRoom} className="btn btn-danger mt-2">Wyjdz z pokoju</button>
                 {AuthServer().getUserName() == owner && 
                     <button type="button" 
                             className="btn btn-success ms-auto mt-2" 
-                            disabled={players.length < 2}
+                            
                             onClick={startGame}
                     >Rozpocznij gre</button>
                 }

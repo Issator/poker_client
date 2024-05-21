@@ -18,6 +18,19 @@ export default function CardServer(){
         }
     }
 
+    const getCards = (roomId, username) => {
+        return new Promise((resolve, reject) => {
+            socket.emit('sprawdz_karty', {gracz: username, id: roomId})
+            socket.on('aktualizacja', (response) => {
+                socket.off('sprawdz_karty')
+                socket.off('aktualizacja')
+                resolve(response)
+            })
+
+            setTimeout(reject, 1000)
+        })
+    }
+
     const fold = () => {
         console.log("fold")
     }
@@ -42,29 +55,11 @@ export default function CardServer(){
         console.log("allIn")
     }
 
-    const getFirstCards = async (username) => {
-        return new Promise((resolve, reject) => {
-            socket.emit('rozdanie', {nazwa: username})
-            socket.on("rozdanie", (response) => {
-                socket.off('rozdanie')
-                socket.off('karty')
-                reject(response)
-            })
-
-            socket.on('karty', (response) => {
-                socket.off('rozdanie')
-                socket.off('karty')
-                resolve(response)
-            })
-
-            setTimeout(() => {reject("timeout")}, 1000)
-        })
-    }
 
     return {
+        getCards,
         changeCard,
         getCard,
-        getFirstCards,
         fold,
         call,
         check,
