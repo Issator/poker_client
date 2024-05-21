@@ -49,7 +49,7 @@ export default function RoomPage(){
     }, [])
 
     const onKeyAccess = () => {
-        console.log({key})
+        navigate(`/room?id=${key}`, {replace: true})
     }
 
     return (

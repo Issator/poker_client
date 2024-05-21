@@ -92,8 +92,19 @@ export default function RoomServer(){
         })
     }
 
-    const startGame = (username, roomName) => {
-        socket.emit(`start_game`,{nazwa: roomName, gracz: username})
+    const changeRoomData = (username, roomId, roomName, password) => {
+        return new Promise((resolve, reject) => {
+            socket.emit('zmiana_ustawien', {id: roomId, nazwa: roomName, haslo: password, wlasciciel: username})
+            socket.on('zmiana_ustawien', (response) => {
+               resolve(response)
+            })
+
+            setTimeout(() => reject("timeout"), 1000)
+        })
+    }
+
+    const startGame = (players, roomName) => {
+        socket.emit(`start_game`,{id: roomName, gracze: players})
     }
 
     return {
@@ -103,6 +114,7 @@ export default function RoomServer(){
         changePassword,
         getRooms,
         getPlayersInRoom,
-        startGame
+        startGame,
+        changeRoomData
     }
 }

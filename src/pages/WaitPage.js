@@ -11,8 +11,8 @@ import socket from "../servers/Socket"
 export default function WaitPage(){
 
     const [params, setParams] = useSearchParams()
-    const [players, setPlayers] = useState([])
-    const [owner, setOwner] = useState("")
+    const [players, setPlayers] = useState([]) // TODO: jest w roomData już
+    const [owner, setOwner] = useState("") // TODO: jest w roomData juz
     const room_id = params.get('id')
     const [showModal, setShowModal] = useState(false)
     const [roomData, setRoomData] = useState()
@@ -56,6 +56,7 @@ export default function WaitPage(){
         RoomServer().getPlayersInRoom(room_id).then(response => {
             setPlayers(response.gracze)
             setOwner(response.Wlasciciel)
+            setRoomData(response)
         })
     }
 
@@ -67,8 +68,16 @@ export default function WaitPage(){
     }
 
     const onFormSubmit = (data) => {
-        console.log(data)
-        setShowModal(false)
+        const username = AuthServer().getUserName();
+        RoomServer().changeRoomData(username,room_id,data.roomName,data.password)
+                    .then(response => {
+                        console.log(response)
+                        refreshList()
+                        setShowModal(false)
+                    })
+                    .catch(error => {
+                        console.log("edycja nie powiodła sie")
+                    })
     }
 
     useEffect(() => {
@@ -85,17 +94,17 @@ export default function WaitPage(){
     }, [])
 
     useEffect(() => {
-        socket.on(`start_game:${room_id}`, (response) => {
-            console.log(`gra "${room_id}" zaczęła się!`)
+        socket.on(`start_game`, (response) => {
+            console.log("gra zaczęła się!")
         })
 
         return(() => {
-            socket.off(`start_game:${room_id}`)
+            socket.off(`start_game`)
         })
     },[])
 
-    const startGame = (userName, roomName) => {
-        RoomServer().startGame(userName, roomName)
+    const startGame = () => {
+        RoomServer().startGame(roomData.gracze, room_id)
     }
 
     const peopleInRoom = () => {
@@ -120,7 +129,7 @@ export default function WaitPage(){
     return (
         <div className="container">
             <div className="d-flex flex-row mt-2">
-                <h1 className="me-auto">Lobby pokoju {room_id}</h1>
+                <h1 className="me-auto">Lobby pokoju {roomData?.nazwa}</h1>
                 {AuthServer().getUserName() == owner && <button type="button" className="btn btn-primary mt-3" onClick={() => setShowModal(true)}><MdEdit/></button>}
             </div>
             <hr/>
@@ -140,12 +149,12 @@ export default function WaitPage(){
                     <button type="button" 
                             className="btn btn-success ms-auto mt-2" 
                             disabled={players.length < 2}
-                            onClick={() => startGame(owner, room_id)}
+                            onClick={startGame}
                     >Rozpocznij gre</button>
                 }
             </div>
 
-            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit} editMode={true} defaultValues={{roomName: room_id}}/>}
+            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit} editMode={true} defaultValues={{roomName: roomData?.nazwa}}/>}
         </div>
     )
 }
