@@ -31,9 +31,9 @@ export default function RoomServer(){
         })
     }
 
-    const joinRoom = (userName, roomName, password) => {
+    const joinRoom = (userName, roomId, password) => {
         return new Promise((resolve, reject) => {
-            socket.emit('dolacz_do_pokoju', {gracz: userName, nazwa: roomName, haslo: password})
+            socket.emit('dolacz_do_pokoju', {gracz: userName, id: roomId, haslo: password})
             socket.on('dolacz_do_pokoju', (response) => {
                 socket.off('dolacz_do_pokoju')
 
@@ -48,9 +48,9 @@ export default function RoomServer(){
         })
     }
 
-    const leaveRoom = (roomName, userName) => {
+    const leaveRoom = (roomId, userName) => {
         return new Promise((resolve, reject) => {
-            socket.emit('opusc_pokoj', {gracz: userName, nazwa: roomName})
+            socket.emit('opusc_pokoj', {gracz: userName, id: roomId})
             socket.on('opuszczanie_pokoju', (response) => {
                 socket.off('opuszczanie_pokoju')
                 socket.off('opusc_pokoj')
@@ -61,9 +61,9 @@ export default function RoomServer(){
         })
     }
 
-    const getPlayersInRoom = (roomName) => {
+    const getPlayersInRoom = (roomId) => {
         return new Promise((resolve, reject) => {
-            socket.emit("sprawdz_graczy_w_pokoju", {nazwa: roomName})
+            socket.emit("sprawdz_graczy_w_pokoju", {id: roomId})
             socket.on("lista_graczy_w_pokoju", response => {
                 socket.off("sprawdz_graczy_w_pokoju")
                 socket.off("lista_graczy_w_pokoju")
@@ -79,9 +79,9 @@ export default function RoomServer(){
         })
     }
 
-    const changePassword = (userName, roomName, password) => {
+    const changePassword = (userName, roomId, password) => {
         return new Promise((resolve, reject) => {
-            socket.emit('ustaw_haslo', {gracz: userName, nazwa: roomName, haslo: password})
+            socket.emit('ustaw_haslo', {gracz: userName, id: roomId, haslo: password})
             socket.on('ustawienie_hasla', (response) => {
                 socket.off('ustawienie_hasla')
                 socket.off('ustaw_haslo')

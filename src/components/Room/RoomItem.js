@@ -15,7 +15,7 @@ export default function RoomItem({data}){
                     </div>
                 </div>
                 <div className="ms-auto d-flex">
-                    <Link to={`/room?name=${data.nazwa}`} className="btn btn-primary align-content-center"><HiArrowRight className="display-6"/></Link>
+                    <Link to={`/room?id=${data["ID"]}`} className="btn btn-primary align-content-center"><HiArrowRight className="display-6"/></Link>
                 </div>
             </div>
         </div>

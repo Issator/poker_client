@@ -6,10 +6,7 @@ export default function CreateRoomModal({onClose, onFormSubmit, editMode = false
         <Modal onClose={onClose}>
             <div className="card" style={{width: "32rem"}}>
                 <div className="d-flex justify-content-end">
-                    <button type="button" className="btn-close bg-light p-2 m-2 mb-0 rounded rounded-4" 
-                            data-bs-dismiss="modal" 
-                            aria-label="Close" 
-                            onClick={onClose}></button>
+                    <button type="button" className="btn btn-secondary mt-2 me-2 rounded-circle" onClick={onClose}>X</button>
                 </div>
                 <CreateRoomForm onSubmit={onFormSubmit} editMode={editMode} defaultValues={defaultValues}/>
             </div>

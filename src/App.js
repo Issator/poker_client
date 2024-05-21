@@ -14,6 +14,7 @@ function App() {
           <Route path="/game" element={<GamePage/>}/>
           <Route path="/search" element={<RoomPage/>}/>
           <Route path="/room" element={<WaitPage/>}/>
+          <Route path="/testArea" element={<GamePage/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
       </BrowserRouter>

@@ -53,6 +53,16 @@ export default function Hand({player = false}){
         setCards(newCards)
     }
 
+    const firstCards = (userName) => {
+        cardServer.getFirstCards(userName)
+                  .then(response => {
+                    console.log(response)
+                  })
+                  .catch(error => {
+                    console.log(error)
+                  })
+    }
+
     const changeCards = () => {
         const newCards = [...cards]
 
@@ -75,6 +85,7 @@ export default function Hand({player = false}){
             <div className="d-flex justify-content-center align-items-center mb-1">
                 <div className="flex-row">
                     <div>
+                        <button type="button" className="btn btn-success" onClick={() => firstCards("gracz1")}>Karty</button>
                         <Tooltip text={"poddaj zakład"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
                         </Tooltip>

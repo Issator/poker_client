@@ -13,14 +13,15 @@ export default function WaitPage(){
     const [params, setParams] = useSearchParams()
     const [players, setPlayers] = useState([])
     const [owner, setOwner] = useState("")
-    const roomName = params.get('name')
+    const room_id = params.get('id')
     const [showModal, setShowModal] = useState(false)
+    const [roomData, setRoomData] = useState()
     const navigate = useNavigate()
 
     useEffect(() => {
         const userName = AuthServer().getUserName()
 
-        RoomServer().getPlayersInRoom(roomName).then(response => {
+        RoomServer().getPlayersInRoom(room_id).then(response => {
             return response.gracze
         }).then(players => {
 
@@ -30,7 +31,7 @@ export default function WaitPage(){
 
             if(!players.includes(userName)){
             
-                RoomServer().joinRoom(userName,roomName, "")
+                RoomServer().joinRoom(userName,room_id, "")
                             .then(response => {
                                 console.log(response)
                             })
@@ -44,7 +45,7 @@ export default function WaitPage(){
 
         // TODO: reload dont kick out
         return() => {
-            RoomServer().leaveRoom(roomName, userName).finally(() => {
+            RoomServer().leaveRoom(room_id, userName).finally(() => {
                 redirect("/search")
             })}
     }, [])
@@ -52,14 +53,14 @@ export default function WaitPage(){
 
 
     const refreshList = () => {
-        RoomServer().getPlayersInRoom(roomName).then(response => {
+        RoomServer().getPlayersInRoom(room_id).then(response => {
             setPlayers(response.gracze)
             setOwner(response.Wlasciciel)
         })
     }
 
     const kickOutUser = (name) => {
-        RoomServer().leaveRoom(roomName, name).finally(() => {
+        RoomServer().leaveRoom(room_id, name).finally(() => {
             console.log(`kick ${name} user out`)
             refreshList()
         })
@@ -84,12 +85,12 @@ export default function WaitPage(){
     }, [])
 
     useEffect(() => {
-        socket.on(`start_game:${roomName}`, (response) => {
-            console.log(`gra "${roomName}" zaczęła się!`)
+        socket.on(`start_game:${room_id}`, (response) => {
+            console.log(`gra "${room_id}" zaczęła się!`)
         })
 
         return(() => {
-            socket.off(`start_game:${roomName}`)
+            socket.off(`start_game:${room_id}`)
         })
     },[])
 
@@ -119,8 +120,8 @@ export default function WaitPage(){
     return (
         <div className="container">
             <div className="d-flex flex-row mt-2">
-                <h1 className="me-auto">Lobby pokoju {roomName}</h1>
-                <button type="button" className="btn btn-primary mt-3" onClick={() => setShowModal(true)}><MdEdit/></button>
+                <h1 className="me-auto">Lobby pokoju {room_id}</h1>
+                {AuthServer().getUserName() == owner && <button type="button" className="btn btn-primary mt-3" onClick={() => setShowModal(true)}><MdEdit/></button>}
             </div>
             <hr/>
             <p className="display-4">
@@ -138,13 +139,13 @@ export default function WaitPage(){
                 {AuthServer().getUserName() == owner && 
                     <button type="button" 
                             className="btn btn-success ms-auto mt-2" 
-                            disabled={players.length < 1}
-                            onClick={() => startGame(owner, roomName)}
+                            disabled={players.length < 2}
+                            onClick={() => startGame(owner, room_id)}
                     >Rozpocznij gre</button>
                 }
             </div>
 
-            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit} editMode={true} defaultValues={{roomName: roomName}}/>}
+            {showModal && <CreateRoomModal onClose={() => setShowModal(false)} onFormSubmit={onFormSubmit} editMode={true} defaultValues={{roomName: room_id}}/>}
         </div>
     )
 }

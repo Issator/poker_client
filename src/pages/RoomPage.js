@@ -31,7 +31,7 @@ export default function RoomPage(){
                     .then((response) => {
                         console.log(response)
                         setShowModal(false)
-                        navigate(`/room?name=${data.roomName}`, {replace: true})
+                        navigate(`/room?id=${response["ID"]}`, {replace: true})
                     })
     }
 

@@ -42,31 +42,29 @@ export default function CardServer(){
         console.log("allIn")
     }
 
-    const getCards = async (username) => {
+    const getFirstCards = async (username) => {
         return new Promise((resolve, reject) => {
             socket.emit('rozdanie', {nazwa: username})
-            socket.on("komunikat", (response) => {
+            socket.on("rozdanie", (response) => {
                 socket.off('rozdanie')
-                socket.off('komunikat')
                 socket.off('karty')
                 reject(response)
             })
 
             socket.on('karty', (response) => {
                 socket.off('rozdanie')
-                socket.off('komunikat')
                 socket.off('karty')
                 resolve(response)
             })
 
-            setTimeout(reject, 1000)
+            setTimeout(() => {reject("timeout")}, 1000)
         })
     }
 
     return {
         changeCard,
         getCard,
-        getCards,
+        getFirstCards,
         fold,
         call,
         check,
