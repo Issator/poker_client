@@ -48,6 +48,24 @@ export default function RoomServer(){
         })
     }
 
+    const joinRandomRoom = (userName) => {
+        return new Promise((resolve, reject) => {
+            socket.emit('szybka_gra', {gracz: userName})
+            socket.on('znaleziono_wolny_pokoj', (response) => {
+                socket.off('znaleziono_wolny_pokoj')
+                socket.off('szybka_gra')
+
+                if(response.error){
+                    reject(response)
+                }
+                
+                resolve(response)
+            })
+
+            setTimeout(reject, 1000)
+        })
+    }
+
     const leaveRoom = (roomId, userName) => {
         return new Promise((resolve, reject) => {
             socket.emit('opusc_pokoj', {gracz: userName, id: roomId})
@@ -115,6 +133,7 @@ export default function RoomServer(){
         getRooms,
         getPlayersInRoom,
         startGame,
-        changeRoomData
+        changeRoomData,
+        joinRandomRoom
     }
 }

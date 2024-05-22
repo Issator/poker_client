@@ -7,7 +7,8 @@ import CreateRoomModal from "../components/Modal/CreateRoomModal";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { IoMdRefresh } from "react-icons/io";
-import { MdKey } from "react-icons/md";
+import { MdKey, MdOutlineTimer } from "react-icons/md";
+import { Tooltip } from "../components/Tooltip/Tooltip";
 
 export default function RoomPage(){
     const [showModal, setShowModal] = useState(false)
@@ -52,6 +53,18 @@ export default function RoomPage(){
         navigate(`/room?id=${key}`, {replace: true})
     }
 
+    const quickRoom = () => {
+        const username = AuthServer().getUserName()
+        RoomServer().joinRandomRoom(username)
+                    .then(response => {
+                        navigate(`/room?id=${response.id}`, {replace: true})
+                    })
+                    .catch(() => {
+                        console.lof("nie udało się połączyć")
+                    })
+        
+    }
+
     return (
         <div className="container">
             <MainLogo/>
@@ -61,8 +74,15 @@ export default function RoomPage(){
                     <div className="input-group">
                         <input type="password" className="form-control" placeholder="dołącz do pokoju podając kod..." value={key} onChange={e => {setKey(e.target.value)}}/>
                         <button type='button' className="btn btn-primary me-2 rounded-end-1" onClick={onKeyAccess}><MdKey className="display-6"/></button>
-                        <button type='button' className="btn btn-success me-2 rounded-1" onClick={() => setShowModal(true)}><FaPlus className="display-6"/></button>
-                        <button type="button" className="btn btn-secondary rounded-1" onClick={loadRooms}><IoMdRefresh className="display-6"/></button>
+                        <Tooltip text={"utwórz nowy pokój"} position={"top"}>
+                            <button type='button' className="btn btn-success me-2 rounded-1" onClick={() => setShowModal(true)}><FaPlus className="display-6"/></button>
+                        </Tooltip>
+                        <Tooltip text={"odśwież liste"} position={"top"}>
+                            <button type="button" className="btn btn-secondary rounded-1 me-2" onClick={loadRooms}><IoMdRefresh className="display-6"/></button>
+                        </Tooltip>
+                        <Tooltip text={"dołącz do losowego pokoju"} position={"top"}>
+                            <button type="button" className="btn btn-info rounded-1" onClick={quickRoom}><MdOutlineTimer className="display-6"/></button>
+                        </Tooltip>
                     </div>
                 </div>
             </div>
