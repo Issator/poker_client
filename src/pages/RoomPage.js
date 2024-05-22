@@ -14,6 +14,7 @@ export default function RoomPage(){
     const [showModal, setShowModal] = useState(false)
     const [rooms, setRooms] = useState([])
     const [key, setKey] = useState("")
+    const [quickJoined, setQuickJoined] = useState(true)
     const navigate = useNavigate()
 
     const loadRooms = () => {
@@ -57,12 +58,23 @@ export default function RoomPage(){
         const username = AuthServer().getUserName()
         RoomServer().joinRandomRoom(username)
                     .then(response => {
-                        navigate(`/room?id=${response.id}`, {replace: true})
+                        if(response.id != undefined){
+                            navigate(`/room?id=${response.id}`, {replace: true})
+                        }
                     })
                     .catch(() => {
-                        console.lof("nie udało się połączyć")
+                        console.log("nie udało się połączyć")
+                        failedToJoin()
                     })
         
+    }
+
+    const failedToJoin = () => {
+        setQuickJoined(false)
+        const interval = setInterval(() => {
+            clearInterval(interval)
+            setQuickJoined(true)
+        }, 1000 * 1)
     }
 
     return (
@@ -81,7 +93,7 @@ export default function RoomPage(){
                             <button type="button" className="btn btn-secondary rounded-1 me-2" onClick={loadRooms}><IoMdRefresh className="display-6"/></button>
                         </Tooltip>
                         <Tooltip text={"dołącz do losowego pokoju"} position={"top"}>
-                            <button type="button" className="btn btn-info rounded-1" onClick={quickRoom}><MdOutlineTimer className="display-6"/></button>
+                            <button type="button" className={`btn btn-${quickJoined ? "info" : "danger"} rounded-1`} onClick={quickRoom}><MdOutlineTimer className="display-6"/></button>
                         </Tooltip>
                     </div>
                 </div>
