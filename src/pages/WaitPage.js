@@ -78,12 +78,22 @@ export default function WaitPage(){
 
         refreshList()
         
-        const interval = setInterval(() => {
+        socket.on('dolacz_do_pokoju', (response) => {
             refreshList()
-        }, 1000 * 10)
+        })
+        
+        return () => {
+            socket.off('dolacz_do_pokoju')
+        }
+    }, [])
+
+    useEffect(() => {
+        socket.on('opuszczanie_pokoju', (response) => {
+            refreshList()
+        })
 
         return () => {
-            clearInterval(interval)
+            socket.off('opuszczanie_pokoju')
         }
     }, [])
 

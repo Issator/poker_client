@@ -11,6 +11,8 @@ export default function GamePage(){
     const [params, setParams] = useSearchParams()
     const [playerCards, setPlayerCards] = useState([])
     const [p2Cards, setP2CFards] = useState([dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)])
+    const [p3Cards, setP3CFards] = useState([dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)])
+    const [p4Cards, setP4CFards] = useState([dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)])
     const room_id = params.get('id')
     const players = params.get('players')
     const playerName = AuthServer().getUserName()
@@ -52,13 +54,13 @@ export default function GamePage(){
 
                 {players >= 3 && <div className="left-hand h-100 d-flex align-items-center">
                     <div className="rotation-90">
-                        <Hand/>
+                        <Hand cards={p3Cards}/>
                     </div>
                 </div>}
 
                 {players == 4 && <div className="right-hand h-100 d-flex align-items-center">
                     <div className="rotation-270">
-                        <Hand/>
+                        <Hand cards={p4Cards}/>
                     </div>
                 </div>}
             </div>
