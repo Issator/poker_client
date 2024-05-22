@@ -15,7 +15,6 @@ export default function GamePage(){
     const players = params.get('players')
     const playerName = AuthServer().getUserName()
 
-    
     useEffect(() => {
         socket.on("aktualizacja", response => {
             console.log(response)
@@ -34,6 +33,12 @@ export default function GamePage(){
         CardServer(room_id).getCards(playerName)
     }, [])
 
+    const onCardSelect = (id) => {
+        const newCards = [...playerCards]
+        newCards[id].selected = (newCards[id].selected == true ? false : true)
+        setPlayerCards(newCards)
+    }
+
     return(
         <div className="vh-100 p-5">
             <div className="board h-100 position-relative">
@@ -42,7 +47,7 @@ export default function GamePage(){
                 </div>
 
                 <div className="bottom-hand w-100">
-                    <Hand player roomId={room_id} playerName={playerName} cards={playerCards}/>
+                    <Hand player roomId={room_id} playerName={playerName} cards={playerCards} onCardSelect={onCardSelect}/>
                 </div>
 
                 {players >= 3 && <div className="left-hand h-100 d-flex align-items-center">

@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false, playerName, roomId, cards}){
-
-    console.log(cards)
+export default function Hand({player = false, playerName, roomId, cards, onCardSelect}){
 
     const cardServer = CardServer(roomId)
     const [bet, setBet] = useState(0)
@@ -34,8 +32,8 @@ export default function Hand({player = false, playerName, roomId, cards}){
         cardServer.allIn()
     }
 
-    const onCardClick = () => {
-
+    const onCardClick = (id) => {
+        onCardSelect(id)
     }
 
     const showOptions =  () => {
@@ -79,11 +77,11 @@ export default function Hand({player = false, playerName, roomId, cards}){
                 Postawiona kwota: 1000
             </div>
 
-            {showOptions()}   
+            {showOptions()}
 
             <div className="hand">
                 {cards && cards.map((card, index) => {
-                    return <Card value={card.znak} sign={card.kolor} key={card.kolor + card.znak} id={index} hidden={!player} onClick={onCardClick} selected={card.isSelected}/>
+                    return <Card value={card.znak} sign={card.kolor} key={card.kolor + card.znak} id={index} hidden={!player} onClick={onCardClick} selected={card.selected}/>
                 })}
             </div>
         </>
