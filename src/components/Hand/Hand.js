@@ -3,7 +3,7 @@ import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false, playerName, roomId, cards, onCardSelect}){
+export default function Hand({player = false, playerName, roomId, cards, onCardSelect, betAmount}){
 
     const cardServer = CardServer(roomId)
     const [betValue, setBet] = useState(0)
@@ -70,7 +70,7 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
                     </div>
                     <div className="mt-1">
                         <label htmlFor="betValue" className="form-label mt-2">Zakład: {betValue}</label>
-                        <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} defaultValue={0} onChange={onSliderChange}></input>
+                        <input type="range" className="form-range" id="betValue" min={0} max={100} step={1} defaultValue={0} onChange={onSliderChange}></input>
                     </div>
                 </div>
                 
@@ -81,7 +81,7 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
     return(
         <>
             <div className="d-flex justify-content-center align-items-center mb-2 rotate-0 display-6">
-                Postawiona kwota: 0
+                {playerName}: Postawiona kwota: {betAmount || 0}
             </div>
 
             {showOptions()}
