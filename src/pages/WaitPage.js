@@ -20,7 +20,6 @@ export default function WaitPage(){
 
     useEffect(() => {
         const userName = AuthServer().getUserName()
-
         RoomServer().getPlayersInRoom(room_id).then(response => {
             return response.gracze
         }).then(players => {
@@ -155,7 +154,7 @@ export default function WaitPage(){
                 {AuthServer().getUserName() == owner && 
                     <button type="button" 
                             className="btn btn-success ms-auto mt-2" 
-                            
+                            disabled = {players.length <= 1}
                             onClick={startGame}
                     >Rozpocznij gre</button>
                 }
