@@ -4,19 +4,19 @@
 import { GiClubs, GiDiamonds, GiHearts, GiSpades } from "react-icons/gi";
 
 export default function CardIcon({sign, className}){
-    if(sign == 'S'){
+    if(sign == 'Pik'){
         return <GiSpades className={className}/>
     }
 
-    if(sign == 'C'){
+    if(sign == 'Trefl'){
         return <GiClubs className={className}/>
     }
 
-    if(sign == 'H'){
+    if(sign == 'Kier'){
         return <GiHearts className={className}/>
     }
 
-    if(sign == 'D'){
+    if(sign == 'Karo'){
         return <GiDiamonds className={className}/>
     }
 

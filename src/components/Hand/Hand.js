@@ -3,12 +3,11 @@ import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false, playerName, roomId}){
+export default function Hand({player = false, playerName, roomId, cards}){
 
-    const cardServer = CardServer()
+    console.log(cards)
 
-    const [cards, setCards] = useState([])
-
+    const cardServer = CardServer(roomId)
     const [bet, setBet] = useState(0)
 
     const onSliderChange = (e) => {
@@ -17,61 +16,31 @@ export default function Hand({player = false, playerName, roomId}){
 
     const fold = () => {
         cardServer.fold()
-        changeCards()
     }
 
     const call = () => {
         cardServer.call()
-        changeCards()
     }
 
     const check = () => {
         cardServer.check()
-        changeCards()
     }
 
     const raise = () => {
         cardServer.raise()
-        changeCards()
     }
 
     const allIn = () => {
         cardServer.allIn()
-        changeCards()
     }
 
-    useEffect(() => {
+    const onCardClick = () => {
 
-    },[])
-
-
-    const onCardClick = (index) => {
-        const newCards = [...cards]
-        newCards[index].isSelected = !newCards[index].isSelected
-        setCards(newCards)
     }
+
 
     const firstCards = () => {
-        cardServer.getCards(roomId, playerName)
-                  .then(response => {
-                    console.log(response)
-                  })
-                  .catch(error => {
-                    console.log(error)
-                  })
-    }
-
-    const changeCards = () => {
-        const newCards = [...cards]
-
-        for(let i=0; i<newCards.length; i++){
-            if(newCards[i].isSelected){
-                newCards[i] = cardServer.changeCard()
-            }
-        }
-
-        console.log(newCards)
-        setCards(newCards)
+        cardServer.getCards(playerName)
     }
 
     const showOptions =  () => {
@@ -83,7 +52,7 @@ export default function Hand({player = false, playerName, roomId}){
             <div className="d-flex justify-content-center align-items-center mb-1">
                 <div className="flex-row">
                     <div>
-                        <button type="button" className="btn btn-success" onClick={() => firstCards("gracz1")}>Karty</button>
+                        <button type="button" className="btn btn-success" onClick={firstCards}>Karty</button>
                         <Tooltip text={"poddaj zakład"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
                         </Tooltip>
@@ -119,8 +88,8 @@ export default function Hand({player = false, playerName, roomId}){
             {showOptions()}   
 
             <div className="hand">
-                {cards.map((card, index) => {
-                    return <Card value={card.value} sign={card.sign} key={card.sign + card.value} id={index} hidden={!player} onClick={onCardClick} selected={card.isSelected}/>
+                {cards && cards.map((card, index) => {
+                    return <Card value={card.znak} sign={card.kolor} key={card.kolor + card.znak} id={index} hidden={!player} onClick={onCardClick} selected={card.isSelected}/>
                 })}
             </div>
         </>
