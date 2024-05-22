@@ -7,7 +7,7 @@ import CardIcon from "./CardIcon"
 
 export default function Card({value, sign, id, className = "", hidden=false, onClick=onClick, selected=false}){
 
-    const cardColor = (sign == 'H' || sign == 'D') ? 'danger' : 'dark'
+    const cardColor = (sign == 'Kier' || sign == 'Karo') ? 'danger' : 'dark'
     const icon = CardIcon({sign})
 
     if(hidden){

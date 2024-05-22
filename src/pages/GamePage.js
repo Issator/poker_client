@@ -3,6 +3,7 @@ import Hand from "../components/Hand/Hand";
 import AuthServer from "../servers/AuthServer";
 import { useEffect, useState } from "react";
 import socket from "../servers/Socket";
+import CardServer from "../servers/CardServer";
 
 const dummyCard = {znak: "z", kolor:"a"}
 export default function GamePage(){
@@ -14,18 +15,23 @@ export default function GamePage(){
     const players = params.get('players')
     const playerName = AuthServer().getUserName()
 
+    
     useEffect(() => {
         socket.on("aktualizacja", response => {
             console.log(response)
-
+            
             if(response.message == "Start gry"){
                 setPlayerCards(response.reka)
             }
         })
-
+        
         return(() => {
             socket.off("aktualizacja")
         })
+    }, [])
+
+    useEffect(() => {
+        CardServer(room_id).getCards(playerName)
     }, [])
 
     return(

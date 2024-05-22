@@ -38,11 +38,6 @@ export default function Hand({player = false, playerName, roomId, cards}){
 
     }
 
-
-    const firstCards = () => {
-        cardServer.getCards(playerName)
-    }
-
     const showOptions =  () => {
         if(!player){
             return
@@ -52,7 +47,6 @@ export default function Hand({player = false, playerName, roomId, cards}){
             <div className="d-flex justify-content-center align-items-center mb-1">
                 <div className="flex-row">
                     <div>
-                        <button type="button" className="btn btn-success" onClick={firstCards}>Karty</button>
                         <Tooltip text={"poddaj zakład"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
                         </Tooltip>
