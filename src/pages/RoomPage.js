@@ -85,7 +85,7 @@ export default function RoomPage(){
                 <div className=" align-self-end w-50" >
                     <div className="input-group">
                         <input type="password" className="form-control" placeholder="dołącz do pokoju podając id..." value={key} onChange={e => {setKey(e.target.value)}}/>
-                        <button type='button' className="btn btn-primary me-2 rounded-end-1" onClick={onKeyAccess}><MdKey className="display-6"/></button>
+                        <button type='button' className="btn btn-primary me-2 rounded-end-1" onClick={onKeyAccess} disabled={key.trim().length == 0}><MdKey className="display-6"/></button>
                         <Tooltip text={"utwórz nowy pokój"} position={"top"}>
                             <button type='button' className="btn btn-success me-2 rounded-1" onClick={() => setShowModal(true)}><FaPlus className="display-6"/></button>
                         </Tooltip>

@@ -40,6 +40,10 @@ export default function WaitPage(){
             }
 
             refreshList()
+        }).catch(err => {
+            if(err.error == "Pokój o podanej nazwie nie istnieje"){
+                navigate("/search", { replace: true })
+            }
         })
     }, [])
 
@@ -50,14 +54,14 @@ export default function WaitPage(){
             setPlayers(response.gracze)
             setOwner(response.Wlasciciel)
             setRoomData(response)
-        })
+        }).catch(err => {})
     }
 
     const kickOutUser = (name) => {
         RoomServer().leaveRoom(room_id, name).finally(() => {
             console.log(`kick ${name} user out`)
             refreshList()
-        })
+        }).catch(err => {})
     }
 
     const onFormSubmit = (data) => {
