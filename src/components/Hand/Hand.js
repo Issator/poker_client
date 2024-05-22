@@ -6,7 +6,7 @@ import { Tooltip } from "../Tooltip/Tooltip"
 export default function Hand({player = false, playerName, roomId, cards, onCardSelect}){
 
     const cardServer = CardServer(roomId)
-    const [bet, setBet] = useState(0)
+    const [betValue, setBet] = useState(0)
 
     const onSliderChange = (e) => {
         setBet(e.target.value)
@@ -25,7 +25,11 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
     }
 
     const raise = () => {
-        cardServer.raise()
+        cardServer.raise(betValue)
+    }
+
+    const bet = () => {
+        cardServer.bet(betValue)
     }
 
     const allIn = () => {
@@ -54,6 +58,9 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
                         <Tooltip text={"wyrównaj do postawionej kwoty"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={call}>Sprawdzanie</button>
                         </Tooltip>
+                        <Tooltip text={"postaw swoją stawke"} position={"bottom"}>
+                            <button type="button" className="size-on-hover btn btn-success mx-1" onClick={bet}>postaw</button>
+                        </Tooltip>
                         <Tooltip text={"przebij postawioną stawke"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
                         </Tooltip>
@@ -62,7 +69,7 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
                         </Tooltip>
                     </div>
                     <div className="mt-1">
-                        <label htmlFor="betValue" className="form-label mt-2">Zakład: {bet}</label>
+                        <label htmlFor="betValue" className="form-label mt-2">Zakład: {betValue}</label>
                         <input type="range" className="form-range" id="betValue" min={0} max={1000} step={1} defaultValue={0} onChange={onSliderChange}></input>
                     </div>
                 </div>
@@ -74,7 +81,7 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
     return(
         <>
             <div className="d-flex justify-content-center align-items-center mb-2 rotate-0 display-6">
-                Postawiona kwota: 1000
+                Postawiona kwota: 0
             </div>
 
             {showOptions()}
