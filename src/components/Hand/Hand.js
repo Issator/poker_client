@@ -3,7 +3,9 @@ import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false, playerName, roomId, cards, onCardSelect, betAmount}){
+export default function Hand({player = false, roomId, onCardSelect, playerData, current}){
+
+    const {betAmount, cards, name} = playerData
 
     const cardServer = CardServer(roomId)
     const [betValue, setBet] = useState(0)
@@ -13,27 +15,39 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
     }
 
     const fold = () => {
-        cardServer.fold()
+        if(name == current){
+            cardServer.fold()
+        }
     }
 
     const call = () => {
-        cardServer.call()
+        if(name == current){    
+            cardServer.call()
+        }
     }
 
     const check = () => {
-        cardServer.check()
+        if(name == current){ 
+            cardServer.check()
+        }
     }
 
     const raise = () => {
-        cardServer.raise(betValue)
+        if(name == current){
+            cardServer.raise(betValue)
+        }
     }
 
     const bet = () => {
-        cardServer.bet(betValue)
+        if(name == current){
+            cardServer.bet(betValue) 
+        }
     }
 
     const allIn = () => {
-        cardServer.allIn()
+        if(name == current){
+            cardServer.allIn()
+        }
     }
 
     const onCardClick = (id) => {
@@ -81,7 +95,7 @@ export default function Hand({player = false, playerName, roomId, cards, onCardS
     return(
         <>
             <div className="d-flex justify-content-center align-items-center mb-2 rotate-0 display-6">
-                {playerName}: Postawiona kwota: {betAmount || 0}
+                {name}: Postawiona kwota: {betAmount || 0}
             </div>
 
             {showOptions()}
