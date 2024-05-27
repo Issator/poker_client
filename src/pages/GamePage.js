@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import socket from "../servers/Socket";
 import CardServer from "../servers/CardServer";
 
-const dummyCard = (idx) => {return {znak: idx, kolor:"a"}}
+const dC = (idx) => {return {znak: idx, kolor:"a"}}
 export default function GamePage(){
 
     const [params, setParams] = useSearchParams()
     const [playerCards, setPlayerCards] = useState([])
-    const [p2, setP2] = useState({cards:[dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)], name:"", betAmount: 0})
-    const [p3, setP3] = useState({cards:[dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)], name:"", betAmount: 0})
-    const [p4, setP4] = useState({cards:[dummyCard(1),dummyCard(2),dummyCard(3),dummyCard(4),dummyCard(5)], name:"", betAmount: 0})
+    const [p2, setP2] = useState({cards:[dC(1),dC(2),dC(3),dC(4),dC(5)], name:"", betAmount: 0})
+    const [p3, setP3] = useState({cards:[dC(1),dC(2),dC(3),dC(4),dC(5)], name:"", betAmount: 0})
+    const [p4, setP4] = useState({cards:[dC(1),dC(2),dC(3),dC(4),dC(5)], name:"", betAmount: 0})
     const room_id = params.get('id')
     const players = params.get('players')
     const playerName = AuthServer().getUserName()
