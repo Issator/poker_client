@@ -23,22 +23,26 @@ export default function GamePage(){
     const DEFAULT = [{
             name: AuthServer().getUserName(),
             cards: dummyCards(),
-            betAmount: 0
+            betAmount: 0,
+            rest: 100
         },
         {
             name: "",
             cards: dummyCards(),
-            betAmount: 0
+            betAmount: 0,
+            rest: 100
         },
         {
             name: "",
             cards: dummyCards(),
-            betAmount: 0
+            betAmount: 0,
+            rest: 100
         },
         {
             name: "",
             cards: dummyCards(),
-            betAmount: 0
+            betAmount: 0,
+            rest: 100
         }]
 
     const [params, setParams] = useSearchParams()
@@ -47,9 +51,12 @@ export default function GamePage(){
     const numOfPlayers = params.get('players')
     const mainPlayer = AuthServer().getUserName();
 
+    const [onTable, setOnTable] = useState(0)
+
     const [currentPlayer, setCurrentPlayer] = useState("")
 
     const setPlayerData = (name,json) => {
+        console.log(name,json)
         const playerId = players.findIndex(player => player.name == name)
         const newData = [...players]
         if(playerId != -1){
@@ -62,6 +69,10 @@ export default function GamePage(){
         }
 
     }
+
+    useEffect(() => {
+        console.log("player sie zmienił",players)
+    }, [players])
 
     const firstCall = (names, cards) => {
         const newData = [...players]
@@ -88,14 +99,20 @@ export default function GamePage(){
         setPlayers(newData)
     }
 
-    console.log(players)
-
     useEffect(() => {
         socket.on("aktualizacja", response => {
-            console.log(response)
+            console.log("Aktualizacja",response)
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
+            }else{
+                if(response.obecny_gracz && response.stawka){
+                    setPlayerData(response.obecny_gracz, {betAmount: response.bilans, rest: response.stawka})
+                }
+            }
+
+            if(response.stawka_total){
+                setOnTable(response.stawka_total)
             }
 
             setCurrentPlayer(response.nastepny_gracz)
@@ -132,7 +149,10 @@ export default function GamePage(){
                 </div>
 
                 <div className="bottom-hand w-100">
-                    <h1 className="text-center display-4">Ruch gracza: {currentPlayer}</h1>
+                    <div>
+                        <h6 className="text-center display-6">Na stole: {onTable}</h6>
+                        <h6 className="text-center display-6 me-2">Ruch gracza: {currentPlayer}</h6>
+                    </div>
                     <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer}/>
                 </div>
 

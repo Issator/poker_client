@@ -5,10 +5,14 @@ import { Tooltip } from "../Tooltip/Tooltip"
 
 export default function Hand({player = false, roomId, onCardSelect, playerData, current}){
 
-    const {betAmount, cards, name} = playerData
+    const {betAmount, cards, name, rest} = playerData
 
     const cardServer = CardServer(roomId)
     const [betValue, setBet] = useState(0)
+
+    const resetBet = () => {
+        setBet(0)
+    }
 
     const onSliderChange = (e) => {
         setBet(e.target.value)
@@ -17,36 +21,42 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
     const fold = () => {
         if(name == current){
             cardServer.fold()
+            resetBet()
         }
     }
 
     const call = () => {
         if(name == current){    
             cardServer.call()
+            resetBet()
         }
     }
 
     const check = () => {
         if(name == current){ 
             cardServer.check()
+            resetBet()
         }
     }
 
     const raise = () => {
         if(name == current){
             cardServer.raise(betValue)
+            resetBet()
         }
     }
 
     const bet = () => {
         if(name == current){
             cardServer.bet(betValue) 
+            resetBet()
         }
     }
 
     const allIn = () => {
         if(name == current){
             cardServer.allIn()
+            resetBet()
         }
     }
 
@@ -84,7 +94,7 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
                     </div>
                     <div className="mt-1">
                         <label htmlFor="betValue" className="form-label mt-2">Zakład: {betValue}</label>
-                        <input type="range" className="form-range" id="betValue" min={0} max={100} step={1} defaultValue={0} onChange={onSliderChange}></input>
+                        <input type="range" className="form-range" id="betValue" min={0} max={rest} step={1} onChange={onSliderChange} value={betValue}></input>
                     </div>
                 </div>
                 
