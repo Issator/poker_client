@@ -191,7 +191,7 @@ export default function GamePage(){
         })
 
         setSelected([false,false,false,false,false])
-        CardServer(room_id).changeCards(toChange)
+        CardServer(room_id).changeCards(toChange, mainPlayer)
     }
 
     return(
