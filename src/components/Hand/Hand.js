@@ -3,7 +3,7 @@ import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 
-export default function Hand({player = false, roomId, onCardSelect, playerData, current}){
+export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected}){
 
     const {betAmount, cards, name, rest} = playerData
 
@@ -94,7 +94,7 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
                     </div>
                     <div className="mt-1">
                         <label htmlFor="betValue" className="form-label mt-2">Zakład: {betValue}</label>
-                        <input type="range" className="form-range" id="betValue" min={0} max={rest} step={1} onChange={onSliderChange} value={betValue}></input>
+                        <input type="range" className="form-range" id="betValue" min={0} max={rest > 0 ? rest : 0} step={1} onChange={onSliderChange} value={betValue}></input>
                     </div>
                 </div>
                 
@@ -112,7 +112,7 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
 
             <div className="hand">
                 {cards && cards.map((card, index) => {
-                    return <Card value={card.znak} sign={card.kolor} key={card.kolor + card.znak} id={index} hidden={!player} onClick={onCardClick} selected={card.selected}/>
+                    return <Card value={card.znak} sign={card.kolor} key={card.kolor + card.znak} id={index} hidden={!player} onClick={onCardClick} selected={selected ? selected[index] : false}/>
                 })}
             </div>
         </>

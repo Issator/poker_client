@@ -4,6 +4,7 @@ import AuthServer from "../servers/AuthServer";
 import { useEffect, useState } from "react";
 import socket from "../servers/Socket";
 import CardServer from "../servers/CardServer";
+import Modal from 'react-modal';
 
 const dummyCard = (idx) => {return {znak: idx, kolor:"a"}}
 
@@ -50,6 +51,13 @@ export default function GamePage(){
     const room_id = params.get('id')
     const numOfPlayers = params.get('players')
     const mainPlayer = AuthServer().getUserName();
+    const [selected, setSelected] = useState([false,false,false,false,false]);
+
+    const [endRoundsModal, setEndRoundModal] = useState(false)
+    const [gameOverModal, setGameOverModal] = useState(false) 
+    const [winner, setWinner] = useState("")
+    const [winningHand, setWinningHand] = useState("")
+    const [bilans_gracza, setWygranyBilans] = useState("")
 
     const [onTable, setOnTable] = useState(0)
 
@@ -69,10 +77,6 @@ export default function GamePage(){
         }
 
     }
-
-    useEffect(() => {
-        console.log("player sie zmienił",players)
-    }, [players])
 
     const firstCall = (names, cards) => {
         const newData = [...players]
@@ -107,8 +111,12 @@ export default function GamePage(){
                 firstCall(response.gracze,response.reka)
             }else{
                 if(response.obecny_gracz && response.stawka){
-                    setPlayerData(response.obecny_gracz, {betAmount: response.bilans, rest: response.stawka})
+                    setPlayerData(response.obecny_gracz, {betAmount: response.stawka, rest: response.bilans})
                 }
+            }
+
+            if(response.message == "Karty"){
+                setPlayerData(mainPlayer, {cards: response.karty})
             }
 
             if(response.stawka_total){
@@ -119,9 +127,17 @@ export default function GamePage(){
         })
 
         socket.on("rezultat", response => {
-            console.log(response)})
+            console.log(response)
+            setWinner(response.zwyciezca)
+            setWinningHand(response.uklad_zwyciezcy)
+            setWygranyBilans(response.bilans_gracza)
+            setEndRoundModal(true)
+        })
         socket.on("rezultatkoniecgry", response => {
-            console.log(response)})
+            console.log(response)
+            setEndRoundModal(false)
+            setGameOverModal(true)
+        })
         
         return(() => {
             socket.off("aktualizacja")
@@ -135,10 +151,27 @@ export default function GamePage(){
     }, [])
 
     const onCardSelect = (id) => {
-        console.log(id)
-        //const newCards = [...playerCards]
-        //newCards[id].selected = (newCards[id].selected == true ? false : true)
-        //setPlayerCards(newCards)
+        const prevState = [...selected]
+        prevState[id] = !prevState[id]
+        setSelected(prevState)
+    }
+
+    const closeModal = () => {
+        setEndRoundModal(false)
+    }
+
+    const continueGame = () => {
+        closeModal()
+    }
+
+    const endGame = () => {
+        closeModal()
+    }
+    const playAgain = () => {
+        closeModal()
+    }
+    const backToLobby = () => {
+        closeModal()
     }
 
     return(
@@ -153,7 +186,7 @@ export default function GamePage(){
                         <h6 className="text-center display-6">Na stole: {onTable}</h6>
                         <h6 className="text-center display-6 me-2">Ruch gracza: {currentPlayer}</h6>
                     </div>
-                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer}/>
+                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer} selected={selected}/>
                 </div>
 
                 {numOfPlayers >= 3 && <div className="left-hand h-100 d-flex align-items-center">
@@ -168,6 +201,40 @@ export default function GamePage(){
                     </div>
                 </div>}
             </div>
+
+            <Modal
+                isOpen={endRoundsModal}
+                onRequestClose={closeModal}
+                contentLabel="Round Result"
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                <div className="modal-content">
+                    <h2 className="modal-title">KONIEC RUNDY</h2>
+                    <p className="modal-text">Rundę wygrał {winner}</p>
+                    <p className="modal-text">Układ zwycięzcy: {winningHand}</p>
+                    <div className="modal-buttons">
+                        <button onClick={continueGame} className="modal-button">Kontynuuj</button>
+                        <button onClick={endGame} className="modal-button">Przerwij grę</button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                isOpen={gameOverModal}
+                contentLabel="Game Result"
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                <div className="modal-content">
+                    <h2 className="modal-title">KONIEC GRY</h2>
+                    <p className="modal-text">Grę wygrał {winner}</p>
+                    <p className="modal-text">Bilans zwycięzcy: {bilans_gracza}</p>
+                    <div className="modal-buttons">
+                        <button onClick={playAgain} className="modal-button">Zagraj Ponownie</button>
+                        <button onClick={backToLobby} className="modal-button">Wróć do poczekalni</button>
+                    </div>
+                </div>
+            </Modal>
         
         </div>
     )
