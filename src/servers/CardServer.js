@@ -28,6 +28,10 @@ export default function CardServer(room_id){
         socket.emit('podbicie', {id: room_id, stawka: amount})
     }
 
+    const changeCards = (cards) => {
+        socket.emit("dobierz", {id: room_id, karty_do_wymiany: cards})
+    }
+
     const allIn = () => {
         socket.emit('va_banque', {id: room_id})
     }
@@ -40,6 +44,7 @@ export default function CardServer(room_id){
         check,
         bet,
         raise,
-        allIn
+        allIn,
+        changeCards
     }
 }

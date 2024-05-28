@@ -169,12 +169,26 @@ export default function GamePage(){
         closeModal()
         navigate("/search", { replace: true })
     }
+
     const playAgain = () => {
         closeModal()
     }
+
     const backToLobby = () => {
         closeModal()
         navigate(`/room?id=${room_id}`, {replace: true})
+    }
+
+    const onChangeCards = () => {
+        const toChange = []
+        players[0].cards.forEach((card, id) => {
+            if(selected[id]){
+                toChange.push(card)
+            }
+        })
+
+        setSelected([false,false,false,false,false])
+        CardServer(room_id).changeCards(toChange)
     }
 
     return(
@@ -189,7 +203,7 @@ export default function GamePage(){
                         <h6 className="text-center display-6">Na stole: {onTable}</h6>
                         <h6 className="text-center display-6 me-2">Ruch gracza: {currentPlayer}</h6>
                     </div>
-                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer} selected={selected}/>
+                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer} selected={selected} onChangeCards={onChangeCards}/>
                 </div>
 
                 {numOfPlayers >= 3 && <div className="left-hand h-100 d-flex align-items-center">

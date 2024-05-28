@@ -1,14 +1,31 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CardServer from "../../servers/CardServer"
 import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
+import socket from "../../servers/Socket"
 
-export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected}){
+export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected, onChangeCards}){
 
     const {betAmount, cards, name, rest} = playerData
+    const [canTakeCards, setCanTakeCards] = useState(false)
 
     const cardServer = CardServer(roomId)
     const [betValue, setBet] = useState(0)
+
+    useEffect(() => {
+        if(player){
+            socket.on('dobierz_karty', response => {
+                console.log(response)
+                setCanTakeCards(true)
+            })
+        }
+
+        return(() => {
+            if(player){
+                socket.off('dobierz_karty')
+            }
+        })
+    },[])
 
     const resetBet = () => {
         setBet(0)
@@ -64,10 +81,18 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
         onCardSelect(id)
     }
 
+    const changeCards = () => {
+        onChangeCards()
+        setCanTakeCards(false)
+    }
+
     const showOptions =  () => {
         if(!player){
             return
         }
+
+        const canChangeCards = selected.some((item) => item == true)
+        const changeCardsColor = canChangeCards ? "warning" : "secondary"
 
         return(
             <div className="d-flex justify-content-center align-items-center mb-1">
@@ -76,6 +101,9 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
                         <Tooltip text={"poddaj zakład"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={fold}>Pas</button>
                         </Tooltip>
+                        {canTakeCards && <Tooltip text={"zmień wybrane karty"} position={"bottom"}>
+                            <button type="button" className={`size-on-hover btn btn-${changeCardsColor} mx-1`} onClick={changeCards} disabled={!canChangeCards}>Zmień karty</button>
+                        </Tooltip>}
                         <Tooltip text={"czekaj na ruch innych graczy"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={check}>Czekanie</button> 
                         </Tooltip>
