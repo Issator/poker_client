@@ -184,8 +184,8 @@ export default function GamePage(){
         players[0].cards.forEach((card, id) => {
             if(selected[id]){
                 toChange.push({
-                    kolory: card.znak,
-                    hierarchia: card.kolor
+                    hierarchia: card.znak,
+                    kolory: card.kolor
                 })
             }
         })
