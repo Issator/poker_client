@@ -4,8 +4,14 @@ import MainPage from "./pages/MainPage"
 import GamePage from "./pages/GamePage";
 import RoomPage from "./pages/RoomPage";
 import WaitPage from "./pages/WaitPage";
+import socket from "./servers/Socket";
 
 function App() {
+
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+
   return (
     <div className="container-fluid">
       <BrowserRouter>
