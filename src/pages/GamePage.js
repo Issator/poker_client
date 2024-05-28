@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Hand from "../components/Hand/Hand";
 import AuthServer from "../servers/AuthServer";
 import { useEffect, useState } from "react";
@@ -46,6 +46,7 @@ export default function GamePage(){
             rest: 100
         }]
 
+    const navigate = useNavigate()
     const [params, setParams] = useSearchParams()
     const [players, setPlayers] = useState([...DEFAULT])
     const room_id = params.get('id')
@@ -166,12 +167,14 @@ export default function GamePage(){
 
     const endGame = () => {
         closeModal()
+        navigate("/search", { replace: true })
     }
     const playAgain = () => {
         closeModal()
     }
     const backToLobby = () => {
         closeModal()
+        navigate(`/room?id=${room_id}`, {replace: true})
     }
 
     return(
