@@ -145,7 +145,7 @@ export default function WaitPage(){
             </div>
             {left && <div className="alert alert-info alert-dismissible fade show mt-2" role="alert">
                 <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                Gracz <strong> {left} </strong> przerwał gre!
+                Gra została przerwana/zakończona przez gracza <strong> {left} </strong>!
             </div>}
             <hr/>
             <p className="display-4">
