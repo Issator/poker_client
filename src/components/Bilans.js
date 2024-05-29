@@ -7,9 +7,11 @@ export default function Bilans({players, round, licitation}) {
                 <hr className="m-1 p-0" />
 
                 {players.map(player => {
-                    return (
-                        <div className="m-0 p-0 d-flex" key={player.name}>{player.name} <span className="ms-auto">{player.rest}</span></div>
-                    )
+                    if(player.name){
+                        return (
+                            <div className="m-0 p-0 d-flex" key={player.name}>{player.name} <span className="ms-auto">{player.rest}</span></div>
+                        )
+                    }
                 })}
             </div>
         </div>
