@@ -14,6 +14,7 @@ export default function WaitPage(){
     const [players, setPlayers] = useState([]) // TODO: jest w roomData już
     const [owner, setOwner] = useState("") // TODO: jest w roomData juz
     const room_id = params.get('id')
+    const left = params.get('left')
     const [showModal, setShowModal] = useState(false)
     const [roomData, setRoomData] = useState("asdasasdasd")
     const navigate = useNavigate()
@@ -141,6 +142,10 @@ export default function WaitPage(){
             <div className="d-flex flex-row mt-2">
                 <h1 className="me-auto">Lobby pokoju {roomData?.nazwa}</h1>
                 {AuthServer().getUserName() == owner && <button type="button" className="btn btn-primary mt-3" onClick={() => setShowModal(true)}><MdEdit/></button>}
+            </div>
+            <div className="alert alert-info alert-dismissible fade show" role="alert">
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                Gracz <strong> {left} </strong> przerwał gre!
             </div>
             <hr/>
             <p className="display-4">

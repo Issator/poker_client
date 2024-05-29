@@ -102,7 +102,8 @@ export default function GamePage(){
             console.log("Aktualizacja",response)
 
             if(response.message == "Opuszczenie gry"){
-                navigate(`/room?id=${room_id}`, {replace: true})
+                const leave = response.gracz_opuszczajacy
+                navigate(`/room?id=${room_id}&left=${leave}`, {replace: true})
             }
             
             if(response.message == "Start gry"){
