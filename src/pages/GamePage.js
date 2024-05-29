@@ -100,6 +100,10 @@ export default function GamePage(){
     useEffect(() => {
         socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
+
+            if(response.message == "Opuszczenie gry"){
+                navigate(`/room?id=${room_id}`, {replace: true})
+            }
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
@@ -177,6 +181,7 @@ export default function GamePage(){
 
     const backToLobby = () => {
         closeModal()
+        socket.emit('opusc_gre', {id: room_id, gracz: mainPlayer})
         navigate(`/room?id=${room_id}`, {replace: true})
     }
 
