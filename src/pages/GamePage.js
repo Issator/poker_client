@@ -172,6 +172,7 @@ export default function GamePage(){
 
     const continueGame = () => {
         socket.emit("start_game", {id: room_id, gracz: mainPlayer})
+        socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
         setOnTable(0)
         closeModal()
     }
