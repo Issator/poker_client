@@ -2,7 +2,7 @@ export default function Bilans({players, round, licitation}) {
     return (
         <div className="bilans">
             <div className="card p-3 border-3 shadow">
-                <p>Runda {round} - licytacja {licitation}/2</p>
+                <p>Runda <b>{round}</b> - licytacja <b>{licitation}/2</b></p>
                 <h6 className="display-6 text-center">Bilans</h6>
                 <hr className="m-1 p-0" />
 
