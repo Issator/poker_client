@@ -101,12 +101,11 @@ export default function GamePage(){
         socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
 
-            setEndRoundModal(false)
-            setGameOverModal(false)
-            
             if(response.message == "Opuszczenie gry"){
                 const leave = response.gracz_opuszczajacy
                 navigate(`/room?id=${room_id}&left=${leave}`, {replace: true})
+                setEndRoundModal(false)
+                setGameOverModal(false)
             }
             
             if(response.message == "Start gry"){
