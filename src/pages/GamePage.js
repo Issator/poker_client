@@ -149,7 +149,7 @@ export default function GamePage(){
             socket.off("rezultat")
             socket.off("rezultatkoniecgry")
         })
-    }, [socket, players, round, licitation])
+    }, [socket, players, round, licitation, onTable])
 
     useEffect(() => {
         CardServer(room_id).getCards(mainPlayer)
@@ -166,6 +166,8 @@ export default function GamePage(){
     }
 
     const continueGame = () => {
+        socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
+        setOnTable(0)
         closeModal()
     }
 
