@@ -99,18 +99,6 @@ export default function GamePage(){
 
     useEffect(() => {
         socket.on("aktualizacja", response => {
-            if(response.runda_gry){
-                setRound(response.runda_gry)
-            }
-
-            if(response.runda_licytacji){
-                setLicitation(response.runda_licytacji)
-            }
-        })
-    }, [socket, round, licitation])
-
-    useEffect(() => {
-        socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
             
             if(response.message == "Start gry"){
@@ -132,6 +120,14 @@ export default function GamePage(){
             if(response.nastepny_gracz){
                 setCurrentPlayer(response.nastepny_gracz)
             }
+
+            if(response.runda_gry){
+                setRound(response.runda_gry)
+            }
+
+            if(response.runda_licytacji){
+                setLicitation(response.runda_licytacji)
+            }
         })
 
         socket.on("rezultat", response => {
@@ -152,7 +148,7 @@ export default function GamePage(){
             socket.off("rezultat")
             socket.off("rezultatkoniecgry")
         })
-    }, [socket, players])
+    }, [socket, players, round, licitation])
 
     useEffect(() => {
         CardServer(room_id).getCards(mainPlayer)
