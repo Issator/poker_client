@@ -108,6 +108,8 @@ export default function GamePage(){
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
+                endRoundsModal(false)
+                gameOverModal(false)
             }else{
                 if(response.obecny_gracz && response.stawka){
                     setPlayerData(response.obecny_gracz, {betAmount: response.stawka, rest: response.bilans})
