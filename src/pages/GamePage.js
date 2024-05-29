@@ -135,6 +135,7 @@ export default function GamePage(){
             setWinner(response.zwyciezca)
             setWinningHand(response.uklad_zwyciezcy)
             setWygranyBilans(response.bilans_gracza)
+            setPlayerData(response.zwyciezca, {rest: response.bilans_gracza})
             setEndRoundModal(true)
         })
         socket.on("rezultatkoniecgry", response => {
