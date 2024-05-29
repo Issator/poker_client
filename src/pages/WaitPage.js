@@ -143,10 +143,10 @@ export default function WaitPage(){
                 <h1 className="me-auto">Lobby pokoju {roomData?.nazwa}</h1>
                 {AuthServer().getUserName() == owner && <button type="button" className="btn btn-primary mt-3" onClick={() => setShowModal(true)}><MdEdit/></button>}
             </div>
-            <div className="alert alert-info alert-dismissible fade show" role="alert">
+            {left && <div className="alert alert-info alert-dismissible fade show mt-2" role="alert">
                 <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 Gracz <strong> {left} </strong> przerwał gre!
-            </div>
+            </div>}
             <hr/>
             <p className="display-4">
                 lista graczy 
