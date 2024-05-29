@@ -156,10 +156,12 @@ export default function GamePage(){
         })
     }, [socket, players, round, licitation, onTable])
 
-    const getPlayerNames = () => {
+    const getActivePlayerNames = () => {
         const names = []
         players.forEach(player => {
-            names.push(player.name)
+            if(player.name){
+                names.push(player.name)
+            }
         })
 
         return names
@@ -180,7 +182,7 @@ export default function GamePage(){
     }
 
     const continueGame = () => {
-        const playerNames = getPlayerNames()
+        const playerNames = getActivePlayerNames()
         socket.emit("start_game", {id: room_id, gracze: playerNames})
         socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
         setOnTable(0)
