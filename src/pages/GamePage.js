@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import socket from "../servers/Socket";
 import CardServer from "../servers/CardServer";
 import Modal from 'react-modal';
+import Bilans from "../components/Bilans";
 
 const dummyCard = (idx) => {return {znak: idx, kolor:"a"}}
 
@@ -209,6 +210,8 @@ export default function GamePage(){
                         <Hand playerData={players[3]}/>
                     </div>
                 </div>}
+
+                <Bilans players={players} round={1} licitation={1}/>
             </div>
 
             <Modal
