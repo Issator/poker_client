@@ -159,7 +159,7 @@ export default function GamePage(){
     const getActivePlayerNames = () => {
         const names = []
         players.forEach(player => {
-            if(player.name){
+            if(player.name != ""){
                 names.push(player.name)
             }
         })
