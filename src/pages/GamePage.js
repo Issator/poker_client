@@ -156,6 +156,15 @@ export default function GamePage(){
         })
     }, [socket, players, round, licitation, onTable])
 
+    const getPlayerNames = () => {
+        const names = []
+        players.forEach(player => {
+            names.push(player.name)
+        })
+
+        return names
+    }
+
     useEffect(() => {
         CardServer(room_id).getCards(mainPlayer)
     }, [licitation])
@@ -171,7 +180,8 @@ export default function GamePage(){
     }
 
     const continueGame = () => {
-        socket.emit("start_game", {id: room_id, gracz: mainPlayer})
+        const playerNames = getPlayerNames()
+        socket.emit("start_game", {id: room_id, gracze: playerNames})
         socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
         setOnTable(0)
         closeModal()
