@@ -202,6 +202,11 @@ export default function GamePage(){
     }
 
     const onChangeCards = () => {
+
+        if(mainPlayer != currentPlayer){
+            return
+        }
+        
         const toChange = []
         players[0].cards.forEach((card, id) => {
             if(selected[id]){
