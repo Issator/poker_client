@@ -158,7 +158,7 @@ export default function GamePage(){
 
     useEffect(() => {
         CardServer(room_id).getCards(mainPlayer)
-    }, [])
+    }, [licitation])
 
     const onCardSelect = (id) => {
         const prevState = [...selected]
