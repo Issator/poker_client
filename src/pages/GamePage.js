@@ -171,11 +171,6 @@ export default function GamePage(){
         closeModal()
     }
 
-    const endGame = () => {
-        closeModal()
-        navigate("/search", { replace: true })
-    }
-
     const playAgain = () => {
         closeModal()
     }
@@ -227,7 +222,7 @@ export default function GamePage(){
                     </div>
                 </div>}
 
-                <Bilans players={players} round={round} licitation={licitation}/>
+                <Bilans players={players} round={round} licitation={licitation} onStopGame={backToLobby}/>
             </div>
 
             <Modal
@@ -243,7 +238,7 @@ export default function GamePage(){
                     <p className="modal-text">Układ zwycięzcy: {winningHand}</p>
                     <div className="modal-buttons">
                         <button onClick={continueGame} className="modal-button">Kontynuuj</button>
-                        <button onClick={endGame} className="modal-button">Przerwij grę</button>
+                        <button onClick={backToLobby} className="modal-button">Wróć do poczekalni</button>
                     </div>
                 </div>
             </Modal>

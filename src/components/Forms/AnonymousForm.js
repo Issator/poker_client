@@ -8,13 +8,18 @@ export default function AnonymousForm({onClick}){
         setName(e.target.value)
     }
 
+    const onFormSubmit = (e) => {
+        e.preventDefault()
+        onClick(name?.trim())
+    }
+
     return(
-        <form>
+        <form onSubmit={onFormSubmit}>
             <div className="mb-3">
                 <label htmlFor="username" className="form-label">Podaj nazwe użytkownika</label>
                 <div className="input-group">
                     <input type="text" className="form-control" id="username" onChange={onchange}></input>
-                    <button type="button" className="btn btn-primary" onClick={() => onClick(name?.trim())} disabled={!name?.trim()}><RiLoginCircleLine className="display-6"/></button>
+                    <button type="submit" className="btn btn-primary" disabled={!name?.trim()}><RiLoginCircleLine className="display-6"/></button>
                 </div>
             </div>
         </form>
