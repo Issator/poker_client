@@ -65,6 +65,9 @@ export default function GamePage(){
 
     const [currentPlayer, setCurrentPlayer] = useState("")
 
+    const [round, setRound] = useState(1)
+    const [licitation, setLicitation] = useState(1)
+
     const setPlayerData = (name,json) => {
         console.log(name,json)
         const playerId = players.findIndex(player => player.name == name)
@@ -96,6 +99,18 @@ export default function GamePage(){
 
     useEffect(() => {
         socket.on("aktualizacja", response => {
+            if(response.runda_gry){
+                setRound(response.runda_gry)
+            }
+
+            if(response.runda_licytacji){
+                setLicitation(response.runda_licytacji)
+            }
+        })
+    }, [socket, round, licitation])
+
+    useEffect(() => {
+        socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
             
             if(response.message == "Start gry"){
@@ -114,7 +129,9 @@ export default function GamePage(){
                 setOnTable(response.stawka_total)
             }
 
-            setCurrentPlayer(response.nastepny_gracz)
+            if(response.nastepny_gracz){
+                setCurrentPlayer(response.nastepny_gracz)
+            }
         })
 
         socket.on("rezultat", response => {
@@ -135,7 +152,7 @@ export default function GamePage(){
             socket.off("rezultat")
             socket.off("rezultatkoniecgry")
         })
-    }, [])
+    }, [socket, players])
 
     useEffect(() => {
         CardServer(room_id).getCards(mainPlayer)
@@ -211,7 +228,7 @@ export default function GamePage(){
                     </div>
                 </div>}
 
-                <Bilans players={players} round={1} licitation={1}/>
+                <Bilans players={players} round={round} licitation={licitation}/>
             </div>
 
             <Modal
