@@ -108,7 +108,7 @@ export default function GamePage(){
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
-                setEndRoundsModal(false)
+                setEndRoundModal(false)
                 setGameOverModal(false)
             }else{
                 if(response.obecny_gracz && response.stawka){
