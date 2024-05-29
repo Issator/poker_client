@@ -101,6 +101,9 @@ export default function GamePage(){
         socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
 
+            setEndRoundModal(false)
+            setGameOverModal(false)
+            
             if(response.message == "Opuszczenie gry"){
                 const leave = response.gracz_opuszczajacy
                 navigate(`/room?id=${room_id}&left=${leave}`, {replace: true})
@@ -108,8 +111,6 @@ export default function GamePage(){
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
-                setEndRoundModal(false)
-                setGameOverModal(false)
             }else{
                 if(response.obecny_gracz && response.stawka){
                     setPlayerData(response.obecny_gracz, {betAmount: response.stawka, rest: response.bilans})
@@ -206,7 +207,7 @@ export default function GamePage(){
         if(mainPlayer != currentPlayer){
             return
         }
-        
+
         const toChange = []
         players[0].cards.forEach((card, id) => {
             if(selected[id]){
