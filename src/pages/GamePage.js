@@ -93,17 +93,6 @@ export default function GamePage(){
         setPlayers(newData)
     }
 
-    const setPlayerNames = (names) => {
-        const newData = [...players]
-        names.forEach((name, id) => {
-            if(name != mainPlayer){
-                newData[id + 1].name = name
-            }
-        })
-
-        setPlayers(newData)
-    }
-
     useEffect(() => {
         socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
@@ -117,7 +106,7 @@ export default function GamePage(){
             }
 
             if(response.message == "Karty"){
-                setPlayerData(mainPlayer, {cards: response.karty})
+                setPlayerData(mainPlayer, {cards: response.reka})
             }
 
             if(response.stawka_total){
