@@ -6,6 +6,7 @@ import socket from "../servers/Socket";
 import CardServer from "../servers/CardServer";
 import Modal from 'react-modal';
 import Bilans from "../components/Bilans";
+import RoomServer from "../servers/RoomServer";
 
 const dummyCard = (idx) => {return {znak: idx, kolor:"a"}}
 
@@ -185,8 +186,17 @@ export default function GamePage(){
 
     const continueGame = () => {
         const playerNames = getActivePlayerNames()
-        socket.emit("start_game", {id: room_id, gracze: playerNames})
-        socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
+        RoomServer().getPlayersInRoom(room_id).then(response => {
+            const players = response.gracze
+            const owner = response.Wlasciciel
+            if(mainPlayer == owner){
+                socket.emit("start_game", {id: room_id, gracze: players})
+                socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        
         setOnTable(0)
         closeModal()
     }
