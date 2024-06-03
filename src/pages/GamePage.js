@@ -185,19 +185,8 @@ export default function GamePage(){
     }
 
     const continueGame = () => {
-        const playerNames = getActivePlayerNames()
-        RoomServer().getPlayersInRoom(room_id).then(response => {
-            const players = response.gracze
-            const owner = response.Wlasciciel
-            if(mainPlayer == owner){
-                socket.emit("start_game", {id: room_id, gracze: players})
-                socket.emit("start_gry", {id: room_id, gracz: mainPlayer})
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-        
-        setOnTable(0)
+        document.body.style.backgroundColor = "#fff";
+        navigate(`/room?id=${room_id}&load=true`, {replace: true})
         closeModal()
     }
 
@@ -210,6 +199,7 @@ export default function GamePage(){
     const backToLobby = () => {
         closeModal()
         socket.emit('opusc_gre', {id: room_id, gracz: mainPlayer})
+        document.body.style.backgroundColor = "#fff";
         navigate(`/room?id=${room_id}`, {replace: true})
     }
 
