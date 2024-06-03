@@ -16,7 +16,12 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
         if(player){
             socket.on('dobierz_karty', response => {
                 console.log(response)
-                setCanTakeCards(true)
+
+                if(response.runda_licytacji == 1){
+                    setCanTakeCards(false)
+                }else{
+                    setCanTakeCards(true)
+                }
             })
         }
 
