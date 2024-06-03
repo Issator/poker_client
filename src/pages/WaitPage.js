@@ -24,6 +24,7 @@ export default function WaitPage(){
         if(load){
             RoomServer().getPlayersInRoom(room_id).then(response => {
                 const players = response.gracze
+                RoomServer().startGame(response.gracze, room_id)
                 navigate(`/game?id=${room_id}&players=${players.length}`, { replace: true })
             })
         }
