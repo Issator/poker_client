@@ -113,7 +113,7 @@ export default function WaitPage(){
 
     useEffect(() => {
         socket.on(`start_game`, () => {
-            navigate(`/game?id=${room_id}&players=${players.length}`, { replace: true })
+            navigate(`/game?id=${room_id}&players=${players.length}&load=true`, { replace: true })
         })
     },[socket, players])
 

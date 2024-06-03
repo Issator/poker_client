@@ -202,6 +202,7 @@ export default function GamePage(){
     }
 
     const playAgain = () => {
+        document.body.style.backgroundColor = "#fff";
         navigate(`/room?id=${room_id}&load=true`, {replace: true})
         closeModal()
     }
