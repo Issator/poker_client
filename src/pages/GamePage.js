@@ -100,6 +100,20 @@ export default function GamePage(){
         setPlayers(newData)
     }
 
+    const setBilans = (array) => {
+        const newData = [...players]
+
+        players.forEach((player, index) => {
+            const found = array.filter(obj => {
+                return obj.gracz == player.name
+              })
+
+            newData[index].rest = found.bilans
+        })
+
+        setPlayers(newData)
+    }
+
     useEffect(() => {
         socket.on("dobierz_karty", response => {
             if(response.runda_licytacji){
@@ -127,6 +141,10 @@ export default function GamePage(){
 
             if(response.message == "Karty"){
                 setPlayerData(mainPlayer, {cards: response.reka})
+            }
+
+            if(response.bilans_graczy){
+                setBilans(response.bilans_graczy)
             }
 
             if(response.stawka_total){
