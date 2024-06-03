@@ -18,6 +18,7 @@ export default function CardServer(room_id){
     }
 
     const check = () => {
+        socket.emit('czekanie', {id: room_id})
     }
 
     const bet = (amount) => {
