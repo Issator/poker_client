@@ -62,6 +62,7 @@ export default function GamePage(){
     const [winner, setWinner] = useState("")
     const [winningHand, setWinningHand] = useState("")
     const [bilans_gracza, setWygranyBilans] = useState("")
+    const [maxBet, setMaxBet] = useState(0)
 
     const [onTable, setOnTable] = useState(0)
 
@@ -132,6 +133,10 @@ export default function GamePage(){
                 setOnTable(response.stawka_total)
             }
 
+            if(response.najwyzsza_stawka){
+                setMaxBet(response.najwyzsza_stawka)
+            }
+
             if(response.nastepny_gracz){
                 setCurrentPlayer(response.nastepny_gracz)
             }
@@ -164,7 +169,7 @@ export default function GamePage(){
             socket.off("rezultat")
             socket.off("rezultatkoniecgry")
         })
-    }, [socket, players, round, licitation, onTable])
+    }, [socket, players, round, licitation, onTable, maxBet])
 
     const getActivePlayerNames = () => {
         const names = []
@@ -243,7 +248,7 @@ export default function GamePage(){
                         <h6 className="text-center display-6">Na stole: {onTable}</h6>
                         <h6 className="text-center display-6 me-2">Ruch gracza: {currentPlayer}</h6>
                     </div>
-                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer} selected={selected} onChangeCards={onChangeCards}/>
+                    <Hand player roomId={room_id} onCardSelect={onCardSelect} playerData={players[0]} current={currentPlayer} selected={selected} onChangeCards={onChangeCards} maxBet={maxBet}/>
                 </div>
 
                 {numOfPlayers >= 3 && <div className="left-hand h-100 d-flex align-items-center">

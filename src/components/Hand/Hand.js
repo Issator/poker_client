@@ -4,7 +4,7 @@ import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 import socket from "../../servers/Socket"
 
-export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected, onChangeCards, playerPosition}){
+export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected, onChangeCards, playerPosition, maxBet}){
 
     const {betAmount, cards, name, rest} = playerData
     const [canTakeCards, setCanTakeCards] = useState(false)
@@ -98,6 +98,8 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
 
         const canChangeCards = selected.some((item) => item == true)
         const changeCardsColor = canChangeCards ? "warning" : "secondary"
+        const canRaise = maxBet < betValue
+        const raiseColor = canRaise ? "violet" : "secondary"
 
         return(
             <div className="d-flex justify-content-center align-items-center mb-1">
@@ -119,7 +121,7 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
                             <button type="button" className="size-on-hover btn btn-success mx-1" onClick={bet}>postaw</button>
                         </Tooltip>
                         <Tooltip text={"przebij postawioną stawke"} position={"bottom"}>
-                            <button type="button" className="size-on-hover btn btn-primary mx-1" onClick={raise}>podbicie</button>
+                            <button type="button" className={`size-on-hover btn btn-${raiseColor} mx-1`} onClick={raise} disabled={!canRaise}>podbicie</button>
                         </Tooltip>
                         <Tooltip text={"połóż wszystkie żetony na puli"} position={"bottom"}>
                             <button type="button" className="size-on-hover btn btn-danger mx-1" onClick={allIn}>va banque</button>
