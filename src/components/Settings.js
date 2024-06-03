@@ -7,6 +7,9 @@ export default function Settings() {
         document.documentElement.style.setProperty('--trefl', "#000000")
         document.documentElement.style.setProperty('--kier', "#dc3545")
         document.documentElement.style.setProperty('--karo', "#dc3545")
+        document.body.style.backgroundColor = "#ffffff";
+        document.body.style.color = "#000000";
+
 
         document.getElementById("reversColor").value = "#0d6efd"
         document.getElementById("aversColor").value = "#ffffff"
@@ -14,6 +17,7 @@ export default function Settings() {
         document.getElementById("treflColor").value = "#000000"
         document.getElementById("kierColor").value = "#dc3545"
         document.getElementById("karoColor").value = "#dc3545"
+        document.getElementById("BackgroundColor").value = "#ffffff"
 
     }
 
@@ -35,12 +39,34 @@ export default function Settings() {
 
         const karoColor = document.getElementById("karoColor").value
         document.documentElement.style.setProperty('--karo', karoColor)
+
+        const backgroundColor = document.getElementById("BackgroundColor").value;
+        document.body.style.backgroundColor = backgroundColor;
+
+        if (isDarkColor(backgroundColor)) {
+            document.body.style.color = "#ffffff";
+        } else {
+            document.body.style.color = "#000000";
+        }
+    }
+
+    const isDarkColor = (color) => {
+        const r = parseInt(color.substr(1, 2), 16);
+        const g = parseInt(color.substr(3, 2), 16);
+        const b = parseInt(color.substr(5, 2), 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance < 0.5;
     }
 
     const colorSettings = () => {
         return (
             <>
-            <hr className="m-1 p-0" />
+                <hr/>
+                <  div className="d-flex">
+                    <input type="color" id="BackgroundColor" defaultValue="#ffffff" className="form-control form-control-color" />
+                    <label htmlFor="BackgroundColor" className="ms-1 my-auto">Stół</label>
+                </div>
+                <hr/>
                 <div className="d-flex">
                     <input type="color" id="reversColor" defaultValue="#0d6efd" className="form-control form-control-color" />
                     <label htmlFor="reversColor" className="ms-1 my-auto">Rewers kart</label>
@@ -51,7 +77,7 @@ export default function Settings() {
                     <label htmlFor="aversColor" className="ms-1 my-auto">Awers kart</label>
                 </div>
 
-                <hr />
+                <hr/>
 
                 <div className="d-flex">
                     <input type="color" id="pikColor" defaultValue="#000000" className="form-control form-control-color" />
