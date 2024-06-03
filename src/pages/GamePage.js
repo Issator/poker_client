@@ -110,8 +110,6 @@ export default function GamePage(){
             
             if(response.message == "Start gry"){
                 firstCall(response.gracze,response.reka)
-                setEndRoundModal(false)
-                setGameOverModal(false)
             }else{
                 if(response.obecny_gracz && response.stawka){
                     setPlayerData(response.obecny_gracz, {betAmount: response.stawka, rest: response.bilans})
@@ -183,6 +181,7 @@ export default function GamePage(){
 
     const closeModal = () => {
         setEndRoundModal(false)
+        setGameOverModal(false)
     }
 
     const continueGame = () => {
@@ -203,6 +202,7 @@ export default function GamePage(){
     }
 
     const playAgain = () => {
+        navigate(`/room?id=${room_id}&load=true`, {replace: true})
         closeModal()
     }
 

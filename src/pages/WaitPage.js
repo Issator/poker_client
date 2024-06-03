@@ -20,6 +20,16 @@ export default function WaitPage(){
     const navigate = useNavigate()
 
     useEffect(() => {
+        const load = params.get('load')
+        if(load){
+            RoomServer().getPlayersInRoom(room_id).then(response => {
+                const players = response.gracze
+                navigate(`/game?id=${room_id}&players=${players.length}`, { replace: true })
+            })
+        }
+    }, [])
+
+    useEffect(() => {
         const userName = AuthServer().getUserName()
         RoomServer().getPlayersInRoom(room_id).then(response => {
             return response.gracze

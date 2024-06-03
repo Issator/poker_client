@@ -114,7 +114,7 @@ export default function Settings() {
                             <h6 className="display-6 text-center me-2">Ustawienia</h6>
                         </button>
                     </h2>
-                    <div id="collapseDefaultOne" class="accordion-collapse collapse show" aria-labelledby="headingDefaultOne" data-bs-parent="#accordionDefault">
+                    <div id="collapseDefaultOne" class="accordion-collapse collapse" aria-labelledby="headingDefaultOne" data-bs-parent="#accordionDefault">
                         <div class="accordion-body border-3">
                             {colorSettings()}
                         </div>
