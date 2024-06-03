@@ -4,7 +4,7 @@ import Card from "../Cards/Card"
 import { Tooltip } from "../Tooltip/Tooltip"
 import socket from "../../servers/Socket"
 
-export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected, onChangeCards}){
+export default function Hand({player = false, roomId, onCardSelect, playerData, current, selected, onChangeCards, playerPosition}){
 
     const {betAmount, cards, name, rest} = playerData
     const [canTakeCards, setCanTakeCards] = useState(false)
@@ -130,9 +130,11 @@ export default function Hand({player = false, roomId, onCardSelect, playerData, 
         )
     }
 
+    const rotation = playerPosition == "top" ? "rotate-180" : ""
+
     return(
         <>
-            <div className="d-flex justify-content-center align-items-center mb-2 rotate-0 display-6">
+            <div className={`d-flex justify-content-center align-items-center mb-2 display-6 ${rotation}`}>
                 {name}: Postawiona kwota: {betAmount || 0}
             </div>
 

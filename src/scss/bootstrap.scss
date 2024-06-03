@@ -1,3 +1,37 @@
+
+:root{
+    --opponent-card: #0d6efd;
+    --player-card: #fff;
+    --pik: #000;
+    --trefl: #000;
+    --karo: #dc3545;
+    --kier: #dc3545;
+}
+
+.text-Pik {
+    color: var(--pik) !important
+}
+
+.text-Trefl {
+    color: var(--trefl) !important
+}
+
+.text-Karo {
+    color: var(--karo) !important
+}
+
+.text-Kier {
+    color: var(--kier) !important
+}
+
+.bg-opponent-card{
+    background-color: var(--opponent-card) !important
+}
+
+.bg-player-card{
+    background-color: var(--player-card) !important
+}
+
 .play-card {
     @extend .card;
     @extend .border-3;
@@ -38,9 +72,27 @@
     transform: rotate(180deg);
 }
 
+.rotate-90 {
+    transform: rotate(90deg);
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.rotate-270 {
+    transform: rotate(270deg);
+}
+
 .bilans {
     position: absolute;
     bottom: 0;
+}
+
+.settings {
+    position: absolute;
+    bottom: 0;
+    @extend .end-0;
 }
 
 .bottom-hand {

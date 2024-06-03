@@ -7,18 +7,17 @@ import CardIcon from "./CardIcon"
 
 export default function Card({value, sign, id, className = "", hidden=false, onClick=onClick, selected=false}){
 
-    const cardColor = (sign == 'Kier' || sign == 'Karo') ? 'danger' : 'dark'
     const icon = CardIcon({sign})
 
     if(hidden){
         return (
-            <div className={`play-card text-primary shadow mx-2 ${className} bg-primary`}>
+            <div className={`play-card text-card shadow mx-2 ${className} bg-opponent-card`}>
             </div>
         )
     }
     
     return (
-        <div className={`play-card text-${cardColor} shadow mx-2 ${className} size-on-hover ${selected ? "card-selected" : ""}`} onClick={() => onClick(id)}>
+        <div className={`play-card text-${sign} shadow mx-2 ${className} size-on-hover ${selected ? "card-selected" : ""} bg-player-card`} onClick={() => onClick(id)}>
             <div className="card-sign card-st">
                 {value} {icon}
             </div>

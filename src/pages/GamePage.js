@@ -7,8 +7,9 @@ import CardServer from "../servers/CardServer";
 import Modal from 'react-modal';
 import Bilans from "../components/Bilans";
 import RoomServer from "../servers/RoomServer";
+import Settings from "../components/Settings";
 
-const dummyCard = (idx) => {return {znak: idx, kolor:"a"}}
+const dummyCard = (idx) => {return {znak: idx, kolor:"Kier"}}
 
 const dummyCards = (amount = 5) => {
 
@@ -235,7 +236,7 @@ export default function GamePage(){
         <div className="vh-100 p-5">
             <div className="board h-100 position-relative">
                 <div className="top-hand w-100">
-                    <Hand  playerData={players[1]}/>
+                    <Hand playerData={players[1]} playerPosition="top"/>
                 </div>
 
                 <div className="bottom-hand w-100">
@@ -259,6 +260,7 @@ export default function GamePage(){
                 </div>}
 
                 <Bilans players={players} round={round} licitation={licitation} onStopGame={backToLobby}/>
+                <Settings/>
             </div>
 
             <Modal
