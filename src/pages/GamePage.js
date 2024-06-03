@@ -108,7 +108,12 @@ export default function GamePage(){
                 return obj.gracz == player.name
               })
 
-            newData[index].rest = found.bilans
+              
+              if(found.length > 0){
+                console.log(found)
+                newData[index].rest = found[0].bilans
+            }
+
         })
 
         setPlayers(newData)
