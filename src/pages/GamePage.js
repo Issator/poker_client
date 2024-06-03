@@ -100,6 +100,14 @@ export default function GamePage(){
     }
 
     useEffect(() => {
+        socket.on("dobierz_karty", response => {
+            if(response.runda_licytacji){
+                setLicitation(response.runda_licytacji)
+            }
+        })
+    },[socket, licitation])
+
+    useEffect(() => {
         socket.on("aktualizacja", response => {
             console.log("Aktualizacja",response)
 
