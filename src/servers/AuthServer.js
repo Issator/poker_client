@@ -8,7 +8,12 @@ export default function AuthServer(){
             socket.emit("rejestracja", {"nazwa": name})
             socket.on("rejestracja", (response) => {
                 socket.off("rejestracja")
-                resolve(response)
+                console.log(response);
+                if(response.komunikat){
+                    resolve(response)
+                }else{
+                    reject(response)
+                }
             })
 
             setTimeout(reject, 1000)

@@ -9,12 +9,17 @@ export default function MainPage(){
     const [name, setName] = useState(AuthServer().getUserName())
     const [quickJoined, setQuickJoined] = useState(true)
     const navigate = useNavigate()
+    const [exist, setExist] = useState("")
 
     const onLogin = (name) => {
         AuthServer().anonymousLogin(name).then(result => {
             console.log(result)
             AuthServer().saveUserLocally(name)
             setName(name)
+            setExist("")
+        }).catch(e => {
+            setExist(name)
+            console.log("Nie udalo sie zalogowac")
         })
     }
 
@@ -65,6 +70,10 @@ export default function MainPage(){
         <div className="container">
             <MainLogo/>
             {name ? loggedAlready(): <AnonymousForm onClick={onLogin}/>}
+            {exist && <div className="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                Gracz <strong> {exist} </strong> juz istnieje!
+            </div>}
         </div>
     )
 }
