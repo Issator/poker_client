@@ -51,7 +51,7 @@ export default function Settings() {
                 opponentElement.style.backgroundColor = ''; 
             } else {
                 const opponentColor = document.getElementById("reversColor").value;
-                opponentElement.style.backgroundColor = opponentColor;
+                document.documentElement.style.setProperty('--opponent-card', opponentColor)
                 opponentElement.style.backgroundImage = ''; 
             }
         });
