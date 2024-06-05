@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 export default function Settings() {
+    const canvasRef = useRef(null);
+
 
     const resetColors = () => {
         document.documentElement.style.setProperty('--opponent-card', "#0d6efd")
@@ -40,53 +42,52 @@ export default function Settings() {
         setReverseImage(null);
         setTableOption('color');
         setReverseOption('color');
-        }
+        };
 
     const changeColors = () => {
-        const opponentElements = document.querySelectorAll('.bg-opponent-card');
-    
-        opponentElements.forEach(opponentElement => {
-            if (reverseOption === 'image') {
-                opponentElement.style.backgroundImage = `url(${reverseImage})`;
-                opponentElement.style.backgroundColor = ''; 
-            } else {
-                const opponentColor = document.getElementById("reversColor").value;
-                document.documentElement.style.setProperty('--opponent-card', opponentColor)
-                opponentElement.style.backgroundImage = ''; 
-            }
-        });
-    
-        const cardColor = document.getElementById("aversColor").value
-        document.documentElement.style.setProperty('--player-card', cardColor)
-
-        const pikColor = document.getElementById("pikColor").value
-        document.documentElement.style.setProperty('--pik', pikColor)
-
-        const treflColor = document.getElementById("treflColor").value
-        document.documentElement.style.setProperty('--trefl', treflColor)
-
-        const kierColor = document.getElementById("kierColor").value
-        document.documentElement.style.setProperty('--kier', kierColor)
-
-        const karoColor = document.getElementById("karoColor").value
-        document.documentElement.style.setProperty('--karo', karoColor)
-
-        const backgroundColor = document.getElementById("BackgroundColor")?.value ?? "#ffffff";
-        if (tableOption === 'image') {
-            document.body.style.backgroundImage = `url(${tableImage})`;
-            document.body.style.backgroundColor = ''; 
-        } else {
-            document.body.style.backgroundColor = backgroundColor;
-            document.body.style.backgroundImage = ''; 
-        }
-
+            const opponentElements = document.querySelectorAll('.bg-opponent-card');
         
-        if (isDarkColor(backgroundColor)) {
-            document.body.style.color = "#ffffff";
-        } else {
-            document.body.style.color = "#000000";
-        }
-    }
+            opponentElements.forEach(opponentElement => {
+                if (reverseOption === 'image') {
+                    opponentElement.style.backgroundImage = `url(${reverseImage})`;
+                    opponentElement.style.backgroundColor = ''; 
+                } else {
+                    const opponentColor = document.getElementById("reversColor").value;
+                    document.documentElement.style.setProperty('--opponent-card', opponentColor);
+                    opponentElement.style.backgroundImage = ''; 
+                }
+            });
+        
+            const cardColor = document.getElementById("aversColor").value;
+            document.documentElement.style.setProperty('--player-card', cardColor);
+        
+            const pikColor = document.getElementById("pikColor").value;
+            document.documentElement.style.setProperty('--pik', pikColor);
+        
+            const treflColor = document.getElementById("treflColor").value;
+            document.documentElement.style.setProperty('--trefl', treflColor);
+        
+            const kierColor = document.getElementById("kierColor").value;
+            document.documentElement.style.setProperty('--kier', kierColor);
+        
+            const karoColor = document.getElementById("karoColor").value;
+            document.documentElement.style.setProperty('--karo', karoColor);
+        
+            const backgroundColor = document.getElementById("BackgroundColor")?.value ?? "#ffffff";
+            if (tableOption === 'image') {
+                document.body.style.backgroundImage = `url(${tableImage})`;
+                document.body.style.backgroundColor = ''; 
+                checkIfImageIsDark(tableImage, (isDark) => {
+                    document.body.style.color = isDark ? "#ffffff" : "#000000";
+                });
+            } else {
+                document.body.style.backgroundColor = backgroundColor;
+                document.body.style.backgroundImage = ''; 
+                document.body.style.color = isDarkColor(backgroundColor) ? "#ffffff" : "#000000";
+            }
+        };
+    
+
     const [tableOption, setTableOption] = useState('color'); 
     const [reverseOption, setReverseOption] = useState('color'); 
     const [tableImage, setTableImage] = useState(null); 
@@ -107,6 +108,31 @@ export default function Settings() {
         const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
         return luminance < 0.5;
     }
+
+    const checkIfImageIsDark = (imageSrc, callback) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.src = imageSrc;
+        img.onload = () => {
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            let totalLuminance = 0;
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const r = imageData.data[i];
+                const g = imageData.data[i + 1];
+                const b = imageData.data[i + 2];
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                totalLuminance += luminance;
+            }
+            const averageLuminance = totalLuminance / (imageData.data.length / 4);
+            callback(averageLuminance < 0.5);
+        };
+    };
 
     const tableImages = [
         { id: 1, src: '/stol1.jpg', alt: "Stół 1" },
@@ -237,6 +263,7 @@ export default function Settings() {
 
     return (
         <div className="settings">
+            <canvas ref={canvasRef} style={{ display: 'none' }} />
             <div className="accordion  shadow" id="accordionDefault">
                 <div className="accordion-item border-3">
                     <h2 className="accordion-header" id="headingDefaultOne">
