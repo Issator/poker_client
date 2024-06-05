@@ -298,7 +298,9 @@ export default function GamePage(){
                 overlayClassName="Overlay"
             >
                 <div className="modal-content">
-                    <h2 className="modal-title">KONIEC RUNDY</h2>
+                    <h2 className="modal-title">
+                        {winner == mainPlayer ? "Wygrana!" : "Przegrana!"}
+                    </h2>
                     <p className="modal-text">Rundę wygrał {winner}</p>
                     <p className="modal-text">Układ zwycięzcy: {winningHand}</p>
                     <div className="modal-buttons">
@@ -314,7 +316,9 @@ export default function GamePage(){
                 overlayClassName="Overlay"
             >
                 <div className="modal-content">
-                    <h2 className="modal-title">KONIEC GRY</h2>
+                    <h2 className="modal-title">
+                        {winner == mainPlayer ? "Wygrana!" : "Przegrana!"}
+                    </h2>
                     <p className="modal-text">Grę wygrał {winner}</p>
                     <p className="modal-text">Bilans zwycięzcy: {bilans_gracza}</p>
                     <div className="modal-buttons">
